@@ -1,0 +1,23 @@
+data:
+  npoints: 400
+  split: 0.5
+  seed: 123
+mdt:
+  n_components: 2
+  steps: 4
+  method: random
+  knn: 7
+  quantile: 0.5
+encoder:
+  architecture:
+    units: 64
+    use_bn: False
+  optimizer:
+    learning_rate: 0.01
+  training:
+    epochs: 300
+    batch_size: 200
+    shuffle: True
+    verbose: 0
+mdt_repo: /tmp/mixed-diffusion-trajectory
+output_dir: results

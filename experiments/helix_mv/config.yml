@@ -1,0 +1,24 @@
+data:
+  npoints: 1500
+  split: 0.5
+  seed: 123
+mdt:
+  n_components: 2
+  steps: 4            # trajectory length t
+  method: contrastive # random | circulant | contrastive (learned convex fusion)
+  knn: 7             # kernel sparsification (~ log N); needed by 'contrastive'
+  quantile: 0.5      # per-view sigma = this quantile of pairwise distances
+encoder:
+  architecture:
+    units: 128
+    use_bn: False
+  optimizer:
+    learning_rate: 0.01
+  training:
+    epochs: 2000
+    batch_size: 256
+    shuffle: True
+    verbose: 2
+# Path to the cloned MDT package (github.com/Gwendal-Debaussart/mixed-diffusion-trajectory)
+mdt_repo: /tmp/mixed-diffusion-trajectory
+output_dir: results

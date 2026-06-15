@@ -1,4 +1,4 @@
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import *
 
 
@@ -30,6 +30,27 @@ def build_encoder(input_shape, units, n_components, activation='relu', use_bn=Fa
     ], name='encoder')
 
     return encoder
+
+
+def build_mv_encoder(input_shapes, units, n_components, activation='relu', use_bn=False):
+    """Multi-view encoder: one MLP branch per view, fused into one shared embedding.
+
+    input_shapes: list of per-view input shapes (one entry per data view). The
+    model takes a list of V view tensors and outputs a single embedding, giving
+    out-of-sample extension for an MDT trajectory operator.
+    """
+    inputs, branches = [], []
+    for i, shape in enumerate(input_shapes):
+        x_in = Input(shape=shape, name=f'view_{i}')
+        h = Dense(units, activation=activation)(Flatten()(x_in))
+        h = Dense(units // 2, activation=activation)(h)
+        inputs.append(x_in)
+        branches.append(h)
+    fused = Concatenate()(branches) if len(branches) > 1 else branches[0]
+    fused = Dense(units // 4, activation=activation)(fused)
+    out = EncoderHead(n_components, use_bn)(fused)
+
+    return Model(inputs=inputs, outputs=out, name='mv_encoder')
 
 
 class ConvBlock2D(Layer):

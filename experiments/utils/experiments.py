@@ -10,7 +10,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import History
 
 from src.diffusionloss import DiffusionLoss
-from diffusionmaps import DiffusionMaps
 from experiments.utils.plots import colormap1D, normalize
 from experiments.utils.metrics import distances_errors
 
@@ -140,6 +139,7 @@ def diffusion_maps_experiment(
     Returns:
         Dict[str, Dict[str, np.ndarray]]: Dictionary containing reduced representations for train and test data.
     """
+    from diffusionmaps import DiffusionMaps
     n_train = len(data['train']['X'])
     # Combine train and test data for diffusion maps
     X = np.vstack([data['train']['X'], data['test']['X']])
@@ -224,6 +224,51 @@ def deep_diffusion_maps_experiment(
     return results, encoder, history
 
 
+def deep_mdt_experiment(
+    data: Dict[str, list],
+    sigmas: list,
+    n_components: int,
+    steps: int,
+    method: str,
+    encoder_config: Dict[str, Any],
+    knn: int = None,
+) -> Tuple[Dict[str, Dict[str, Any]], Model]:
+    """
+    Out-of-sample deep extension of a Multi-view Diffusion Trajectory (MDT).
+
+    `data['train']` / `data['test']` are lists of V view arrays (same objects,
+    one entry per view). The trajectory operator W^(t) is built by `method`
+    ('random' | 'circulant' | 'contrastive'=learned fusion); a multi-view
+    encoder is then trained to reproduce its diffusion-map embedding, giving
+    out-of-sample extension to new points.
+    """
+    from src.mvdiffusionloss import MVDiffusionLoss
+    from src.mdt_operators import mdt_operator_from_views
+    from experiments.utils.models import build_mv_encoder
+
+    X_train = data['train']
+    W = mdt_operator_from_views(X_train, sigmas, steps, method=method, knn=knn)
+
+    encoder = build_mv_encoder(
+        input_shapes=[x.shape[1:] for x in X_train],
+        n_components=n_components,
+        **encoder_config['architecture'],
+    )
+    loss = MVDiffusionLoss(W)
+    encoder.compile(loss=loss, optimizer=Adam(**encoder_config['optimizer']))
+
+    indices = np.arange(X_train[0].shape[0])
+    encoder.fit(x=X_train, y=indices, **encoder_config['training'])
+
+    results = {
+        'train': {'X_red': encoder.predict(X_train)},
+        'test': {'X_red': encoder.predict(data['test'])},
+        '_W': W,  # operator, for an optional classical-embedding reference
+    }
+
+    return results, encoder
+
+
 def nystrom_experiment(
     data: Dict[str, Dict[str, np.ndarray]], 
     sigma: float, 
@@ -249,8 +294,9 @@ def nystrom_experiment(
         Dict[str, Dict[str, Any]]: Dictionary containing reduced representations and visualization data.
     """
     # Initialize diffusion maps
+    from diffusionmaps import DiffusionMaps
     dm = DiffusionMaps(sigma=sigma, n_components=n_components, steps=steps, alpha=alpha)
-    
+
     # Fit on training data and transform test data using Nyström extension
     X_train_red = dm.fit_transform(data['train']['X'])
     X_test_red = dm.transform(data['test']['X'])
