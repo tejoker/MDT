@@ -1,0 +1,84 @@
+% Raw G1 and G2 tables from docs/GNN_RESEARCH_LEDGER.md, standalone.
+% Build: pdflatex tables_g1_g2.tex
+\documentclass[10pt]{article}
+\usepackage[margin=15mm]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\pagestyle{empty}
+\begin{document}
+
+\section*{G1 --- a GNN distils fixed MDT more faithfully than an MLP}
+
+\begin{table}[h]\centering\footnotesize
+\caption{Procrustes fidelity to the fixed MDT embedding and the train-AMI consequence.
+Per-dataset means over five seeds. Paired effect over the twelve dataset means:
+$+0.0028\ [-0.0046,\, 0.0102]$, $16/60$ seed-level wins. \textbf{Dead end.}}
+\begin{tabular}{@{}l r r r r r@{}}
+\toprule
+Dataset & classes & fidelity GNN & fidelity MLP & $\Delta$ fidelity & $\Delta$ train AMI\\
+\midrule
+MSRC-v5      & 7   & 0.9991 & 0.9999 & $-0.0008$ & $+0.0045$\\
+Handwritten  & 10  & 0.9936 & 0.9935 & $+0.0001$ & $+0.0024$\\
+Wikipedia    & 10  & 0.9732 & 0.9701 & $+0.0031$ & $-0.0095$\\
+UCI          & 10  & 0.9905 & 0.9920 & $-0.0015$ & $-0.0022$\\
+OutdoorScene & 8   & 0.9837 & 0.9883 & $-0.0046$ & $+0.0082$\\
+Caltech101-7 & 7   & 0.9970 & 0.9989 & $-0.0019$ & $+0.0078$\\
+100Leaves    & 100 & 0.5959 & 0.5567 & $+0.0392$ & $+0.0066$\\
+Yale         & 15  & 0.9997 & 0.9999 & $-0.0002$ & $-0.0005$\\
+3Sources     & 6   & 1.0000 & 1.0000 & $0.0000$  & $0.0000$\\
+BBCSport     & 5   & 1.0000 & 1.0000 & $0.0000$  & $0.0000$\\
+Cora         & 7   & 1.0000 & 1.0000 & $0.0000$  & $0.0000$\\
+CiteSeer     & 6   & 1.0000 & 1.0000 & $0.0000$  & $-0.0003$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{G2 --- graph message passing improves MDT out-of-sample extension}
+
+\begin{table}[h]\centering\footnotesize
+\caption{Absolute out-of-sample AMI, per-dataset means over five seeds. \texttt{nys} is
+training-free Nystr\"om, \texttt{mlp} is feature-only parametric, \texttt{gnn} adds message
+passing over the same bipartite graph.}
+\begin{tabular}{@{}l rrr c rrr@{}}
+\toprule
+& \multicolumn{3}{c}{test AMI} & & \multicolumn{3}{c}{inductive AMI}\\
+\cmidrule{2-4}\cmidrule{6-8}
+Dataset & nys & mlp & gnn & & nys & mlp & gnn\\
+\midrule
+MSRC-v5      & 0.6202 & 0.6892 & 0.6789 & & 0.5989 & 0.6176 & 0.6726\\
+Handwritten  & 0.8698 & 0.8756 & 0.8823 & & 0.8715 & 0.8792 & 0.8835\\
+Wikipedia    & 0.2923 & 0.2955 & 0.3458 & & 0.2768 & 0.2783 & 0.2958\\
+UCI          & 0.7818 & 0.8242 & 0.8283 & & 0.8047 & 0.8275 & 0.8305\\
+OutdoorScene & 0.5232 & 0.5352 & 0.5495 & & 0.4999 & 0.5291 & 0.5470\\
+Caltech101-7 & 0.5283 & 0.5404 & 0.5459 & & 0.5050 & 0.5176 & 0.5367\\
+100Leaves    & 0.6581 & 0.8591 & 0.8849 & & 0.6375 & 0.8618 & 0.8758\\
+Yale         & 0.5398 & 0.4698 & 0.4895 & & 0.5144 & 0.4523 & 0.5004\\
+3Sources     & 0.0799 & 0.3535 & 0.2093 & & 0.0755 & 0.1316 & 0.0776\\
+BBCSport     & 0.1670 & 0.2231 & 0.2026 & & 0.1210 & 0.1143 & 0.1303\\
+Cora         & 0.0266 & 0.0246 & 0.0256 & & 0.0000 & 0.0000 & 0.0000\\
+CiteSeer     & 0.0258 & 0.0576 & 0.0466 & & 0.0082 & 0.0075 & 0.0089\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]\centering\footnotesize
+\caption{The decomposition $(\text{GNN}-\text{Nystr\"om}) = (\text{MLP}-\text{Nystr\"om}) +
+(\text{GNN}-\text{MLP})$. G2 is a claim about the second term only, in bold. Paired $95\%$
+Student intervals across dataset means, seeds averaged within a dataset first.
+\textbf{Dead end}: the graph term never clears the $+0.02$ minimum useful effect.}
+\begin{tabular}{@{}l l r r r@{}}
+\toprule
+Contrast & metric & screen (6) & validation (6) & pooled (12)\\
+\midrule
+GNN $-$ Nystr\"om & test      & $+0.0359\ [0.0153,\, 0.0564]$ & $+0.0602\ [-0.0454,\, 0.1659]$ & $+0.0480\ [0.0034,\, 0.0927]$\\
+GNN $-$ Nystr\"om & inductive & $+0.0349\ [0.0113,\, 0.0584]$ & $+0.0394\ [-0.0632,\, 0.1420]$ & $+0.0372\ [-0.0058,\, 0.0801]$\\
+MLP $-$ Nystr\"om & test      & $+0.0241\ [-0.0033,\, 0.0515]$ & $+0.0817\ [-0.0545,\, 0.2180]$ & $+0.0529\ [-0.0069,\, 0.1128]$\\
+MLP $-$ Nystr\"om & inductive & $+0.0154\ [0.0047,\, 0.0261]$ & $+0.0352\ [-0.0697,\, 0.1401]$ & $+0.0253\ [-0.0182,\, 0.0688]$\\
+\midrule
+\textbf{GNN $-$ MLP} & test      & $+0.0118\ [-0.0097,\, 0.0333]$ & $-0.0215\ [-0.0872,\, 0.0442]$ & $\mathbf{-0.0049\ [-0.0352,\, 0.0254]}$\\
+\textbf{GNN $-$ MLP} & inductive & $+0.0195\ [-0.0003,\, 0.0392]$ & $+0.0042\ [-0.0308,\, 0.0393]$ & $\mathbf{+0.0119\ [-0.0053,\, 0.0290]}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

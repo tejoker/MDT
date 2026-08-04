@@ -1,0 +1,65 @@
+\begin{table}[H]\centering\scriptsize\setlength{\tabcolsep}{2.6pt}
+\caption{Unsupervised MDT trajectory selection (Scenario 4).}
+\label{tab:iq}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l ccc ccc@{}}
+\toprule
+& \multicolumn{3}{c}{Spearman $\rho$} & \multicolumn{3}{c}{selection regret}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Dataset & $Q_c$ & sil & \textbf{en} & $Q_c$ & sil & \textbf{en}\\
+\midrule
+MSRC-v5        & $-.25$ & $-.17$ & $\mathbf{.49}$ & $.072$ & $.097$ & $\mathbf{.043}$\\
+Yale           & $-.12$ & $-.59$ & $.11$          & $.073$ & $.131$ & $\mathbf{.064}$\\
+BBCSport       & $.13$  & $-.04$ & $\mathbf{.60}$ & $.125$ & $.164$ & $\mathbf{.019}$\\
+Caltech101-7   & $-.12$ & $.11$  & $\mathbf{.36}$ & $.047$ & $.467$ & $\mathbf{.043}$\\
+Handwritten    & $.24$  & $.05$  & $.19$          & $\mathbf{.050}$ & $.365$ & $.209$\\
+UCI            & $-.28$ & $-.30$ & $\mathbf{.36}$ & $.369$ & $.404$ & $\mathbf{.121}$\\
+Wikipedia-test & $.33$  & $.61$  & $-.47$         & $\mathbf{.000}$ & $\mathbf{.000}$ & $.315$\\
+\midrule
+mean           & $-.01$ & $-.05$ & $\mathbf{.23}$ & $.105$ & $.233$ & $.116$\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\noindent\textbf{Setup.} Can an unsupervised index pick the best trajectory? Over $30$ random
+trajectories $\times 3$ seeds on structured datasets (oracle AMI$\ge0.35$), rank trajectories by three
+indices and score each two ways: Spearman $\rho$ with the oracle-AMI ranking (higher better) and
+selection regret $=$ oracle$-$selected AMI (lower better). Indices: $Q_c$ = MDT's contrastive
+Internal Quality, sil = embedding silhouette, en = spectral energy (top-$k$ explained
+variance). Embedding dim $d{=}k$; bold = best per block.
+
+\noindent\textbf{Result.} Spectral energy is the only positive ranker (mean $\rho\,{+}.23$ vs
+${-}.01,{-}.05$) and lowest-regret on $5/7$, but it is weak and fails on heterogeneous-view Wikipedia-test
+($\rho\,{-}.47$; four more cross-modal cases below). Raising $d$ (64/128) inflates $\rho$/regret yet
+lowers deployed AMI ($0.54\!\to\!0.52$), a flat-spectrum mirage, not a gain. No index selects
+reliably.
+
+\medskip
+\noindent\textbf{Why energy fails on heterogeneous views.} Energy ranks trajectories by spectral
+cleanliness, not cluster correctness. On cross-modal data a view can be internally clean
+(high energy) yet uninformative about the labels (low single-view AMI), a clean-but-useless view;
+a trajectory that leans on it keeps high energy but clusters poorly, so energy anti-correlates with AMI.
+A separate probe of five heterogeneous datasets (per-view energy vs.\ single-view AMI, and selector
+$\rho$ over $25$ trajectories $\times3$ seeds) shows energy fails exactly when such a view is
+present:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}l c c l c@{}}
+\toprule
+Dataset & views & energy $\rho$ & clean-but-useless view (en/AMI) & verdict\\
+\midrule
+Cora        & 4 & $-.61$ & v2,\,v3: $.14/.00$ & fails\\
+Wikipedia   & 2 & $-.59$ & v0: $.07/.04$      & fails\\
+Prokaryotic & 3 & $-.38$ & v2: $.11/.04$      & fails\\
+NUS-WIDE    & 5 & $-.34$ & v3: $.06/.04$      & fails\\
+CiteSeer    & 2 & $+.93$ & none               & works\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Energy fails ($\rho<0$) on the four datasets carrying a clean-but-useless view and works
+($\rho\,{+}.93$) on the one without. Cora is the sharpest: its two highest-energy views ($.14$) have AMI
+${\approx}.00$, while the most informative view (AMI $.13$) has the lowest energy ($.01$), so
+energy points the wrong way (energy-vs-AMI across views $\rho={-}.95$). Energy measures clean structure,
+not correct structure, so it cannot detect a clean-but-useless view: the failure is fundamental, not a
+tuning issue.

@@ -1,0 +1,27 @@
+\begin{table}[H]\centering\footnotesize
+\caption{The four scenarios as modifications of DDM/MDT.}
+\label{tab:scenarios}
+\begin{tabular}{@{}p{2.15cm}p{2.7cm}p{3.85cm}p{3.15cm}p{3.05cm}@{}}
+\toprule
+Scenario & fixed / learned & objective & change vs DDM & change vs MDT\\
+\midrule
+1.\ Accuracy (neural SVD) & $\W$ fixed; learn $f_\theta$ & $\min_\theta\lVert S f_\theta f_\theta^\top S-\mathbf G\rVert_F^2$ & $\A^{2t}\!\to\!\A\A^\top$; multi-view input & SVD readout $\to$ NN learns it\\[4pt]
+2.\ Cost (truncated SVD) & $\W$ fixed; no network & top-$k$ \texttt{svds} of $x\!\mapsto\!\W x$ & drop the network & dense $O(N^3)\!\to\!$ matrix-free\\[4pt]
+3.\ Out-of-sample & $\W$ fixed; learn $x_*\!\mapsto\!\psi$ & $f_\theta(x_*)$ vs Nystr\"om $\mathbf w_*^\top\mathbf V$ & use $f_\theta$ for new points & add extension (none in MDT)\\[4pt]
+4.\ End-to-end & learn $\phi_v,a$: $\W(\theta)$ & $\min_\theta\mathcal L_{\mathrm{contr}}(\W(\theta))$ & $\mathbf G\!\to\!$ trainable $\mathbf G(\theta)$ & operator fixed $\to$ learned\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Setup.} The map for the whole paper: each experiment is one edit to the DDM/MDT
+pipeline. $\W$ is the MDT operator, $S=\mathrm{diag}(\sqrt{\bp})$ its $\sqrt{\bp}$ weighting, $\mathbf G$
+the DDM Gram target, $\mathbf w_*$ the operator row of a new point $x_*$ against the training set.
+Scenario 1 (Accuracy): freeze $\W$, replace its SVD readout with a net $f_\theta$ trained by
+$\sqrt{\bp}$-Gram matching. Scenario 2 (Cost): freeze $\W$, drop the net, take a matrix-free
+truncated \texttt{svds}. Scenario 3 (OOS): freeze $\W$, learn a map for new points and
+compare it to Nystr\"om. Scenario 4 (End-to-end): make $\W(\theta)$ itself trainable under a
+contrastive loss.
+
+\noindent\textbf{Result.} Scenarios 1--3 keep $\W$ fixed and only change how its SVD embedding is read
+out or extended, and all succeed or tie the classical baseline. Scenario 4 is the only one that removes the
+fixed SVD target, and it collapses. Every later table instantiates one of these four rows.

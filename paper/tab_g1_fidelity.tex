@@ -1,0 +1,42 @@
+% G1: a GNN distils fixed MDT more faithfully than an MLP -- the single table.
+% Numbers: docs/GNN_RESEARCH_LEDGER.md, section "G1", pooled screen + validation twelve.
+\begin{table}[t]\centering\footnotesize
+\caption{G1 is a decided negative, not an inconclusive one. Procrustes fidelity to the fixed MDT
+embedding, per-dataset means over five seeds, for the two students that differ in one line of code
+(\texttt{\_aggregate} returns zeros for \texttt{teacher\_mlp}). The paired effect over the twelve
+dataset means is $+0.0028$ $[-0.0046, 0.0102]$, $16/60$ seed-level wins: the upper limit is a fifth of
+the $+0.02$ minimum useful effect. The reason is the absence of headroom---$89$ of the $120$ teacher
+rows exceed $0.99$, and on the four text datasets both students hit $1.0000$ to four decimals. The one
+dataset with real headroom, 100Leaves, is also the only clear GNN win ($+0.0392$), and it converts to
+$+0.0066$ train AMI: even where message passing demonstrably fits the teacher better, the extra
+fidelity buys no usable cluster structure.}
+\label{tab:g1}
+\begin{tabular}{@{}l r r r r r@{}}
+\toprule
+Dataset & classes & fidelity GNN & fidelity MLP & $\Delta$ fidelity & $\Delta$ train AMI\\
+\midrule
+MSRC-v5      & 7   & 0.9991 & \textbf{0.9999} & $-0.0008$ & $+0.0045$\\
+Handwritten  & 10  & \textbf{0.9936} & 0.9935 & $+0.0001$ & $+0.0024$\\
+Wikipedia    & 10  & \textbf{0.9732} & 0.9701 & $+0.0031$ & $-0.0095$\\
+UCI          & 10  & 0.9905 & \textbf{0.9920} & $-0.0015$ & $-0.0022$\\
+OutdoorScene & 8   & 0.9837 & \textbf{0.9883} & $-0.0046$ & $+0.0082$\\
+Caltech101-7 & 7   & 0.9970 & \textbf{0.9989} & $-0.0019$ & $+0.0078$\\
+100Leaves    & 100 & \textbf{0.5959} & 0.5567 & $+0.0392$ & $+0.0066$\\
+Yale         & 15  & 0.9997 & \textbf{0.9999} & $-0.0002$ & $-0.0005$\\
+3Sources     & 6   & 1.0000 & 1.0000 & $0.0000$ & $0.0000$\\
+BBCSport     & 5   & 1.0000 & 1.0000 & $0.0000$ & $0.0000$\\
+Cora         & 7   & 1.0000 & 1.0000 & $0.0000$ & $0.0000$\\
+CiteSeer     & 6   & 1.0000 & 1.0000 & $0.0000$ & $-0.0003$\\
+\midrule
+\multicolumn{4}{@{}l}{paired effect over the twelve dataset means}
+             & \multicolumn{2}{r@{}}{$+0.0028\ [-0.0046,\, 0.0102]$}\\
+\bottomrule
+\end{tabular}\\[2pt]
+{\footnotesize Fidelity is $1 - \lVert AR - B\rVert_F^2 / \lVert B\rVert_F^2$ after per-column
+standardisation of both matrices, maximised over rotations $R$; it equals $1$ when the student recovers
+the teacher up to rotation. \texttt{mdt\_nystrom} is excluded because it \emph{is} the teacher and
+scores $1.0$ by definition. Estimator: five seeds averaged within a dataset, then a paired $95\%$
+Student interval across the twelve dataset means. Win counts are seed-level and are a consistency
+diagnostic only. Amendment A3's shuffled-graph control agrees from the capacity side: destroying the
+graph outright costs the student $+0.0029$ fidelity $[-0.0014, 0.0072]$.}
+\end{table}

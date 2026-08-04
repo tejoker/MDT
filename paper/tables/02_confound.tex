@@ -1,0 +1,35 @@
+\begingroup\centering\footnotesize
+\begin{tabular}{l r r r r r r}
+\toprule
+Dataset & classes & features only & eig (random) & $\text{eig}_{\text{best}}$ (fair) & $\text{eig}_{\text{best}}$ (oracle) & neural (fair)\\
+\midrule
+MNIST-4   & 4   & 0.707 & 0.789 & 0.783 & 0.808 & 0.782\\
+MNIST-10k & 10  & 0.450 & 0.786 & 0.787 & 0.798 & 0.790\\
+ALOI      & 100 & 0.737 & 0.773 & 0.767 & 0.787 & 0.795\\
+\bottomrule
+\end{tabular}
+\par\endgroup
+\medskip
+
+\noindent\textbf{Setup.} Three clustering benchmarks, 4{,}000 samples each, scored by
+$k$-means AMI: MNIST-4 (digits 0--3, 4 classes), MNIST-10k (all digits, 10 classes), ALOI
+(100-object subset of the Amsterdam Library of Object Images). MDT embeds by plain truncated
+\texttt{svds} of its operator. Here $k$ is the number of clusters (the known class count, which
+$k$-means also needs), and the embedding is the top-$k$ singular vectors of the operator after dropping
+the trivial top mode ($\sigma_1$, the constant stationary direction), scaled by their singular values;
+by Eckart--Young this is the optimal rank-$k$ summary, and we keep exactly $k$ because the clustering
+that follows asks for $k$ groups (extra components only add noise on the near-uniform diffused operator).
+All columns share this decomposition: features only: $k$-means
+on raw features, no diffusion; eig (random): mean over 8 random trajectories;
+eig$_{\text{best}}$ (fair): best of 8 selected by top-$k$ spectral energy (unsupervised,
+deployable); eig$_{\text{best}}$ (oracle): best of 8 selected by AMI (uses labels);
+neural (fair): a net reproducing the top-$k$ SVD of the same energy-selected (fair) operator,
+by a Rayleigh objective (the Rayleigh trace $\operatorname{tr}(Q^{\top}\W\W^{\top}Q)$ is a differentiable
+surrogate whose optimum equals the SVD, so gradient ascent learns the SVD as a function, whereas
+an eigensolver only computes it as numbers).
+
+\noindent\textbf{Result.} With the decomposition fixed to \texttt{svds}, trajectory selection adds
+nothing (eig random $\approx$ eig$_{\text{best}}$ fair); the oracle leads only by selecting on labels
+(AMI), so it is not deployable. Neural matches, and marginally exceeds, \texttt{svds} (ALOI $+0.03$),
+though within run-to-run noise: a hint, not yet a result, that a learned approximation may leave small
+headroom over MDT.

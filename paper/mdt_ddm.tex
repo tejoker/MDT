@@ -1,0 +1,520 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\title{\vspace{-1.4em}\textbf{When Deep Learning Does Not Help Multi-view Diffusion:\\
+Truncated SVD and Nystr\"om Beat the Neural Machinery}}
+\author{\normalsize Cautionary study --- Centre Borelli}
+\date{}
+
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\Pii}{\boldsymbol{\Pi}}
+\newcommand{\bp}{\boldsymbol{\pi}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+A parametric network (Deep Diffusion Maps, DDM) could in principle improve Multi-view Diffusion
+Trajectories (MDT)---whose embedding is the SVD of a product of per-view diffusion operators---along
+four axes: \emph{accuracy}, \emph{cost}, \emph{out-of-sample} extension, and \emph{end-to-end}
+trainability. We report a negative result. Accuracy is capped by a ceiling argument: a Gram-matching
+network's global optimum is the truncated SVD itself (Eckart--Young), so it cannot exceed the SVD of
+the same operator---confirmed empirically. On cost, a truncated SVD on the operator's sparse action
+matches the network's accuracy at $\sim$300$\times$ less compute. On out-of-sample---DDM's actual
+motivation---a single run appears to favour Nystr\"om, but over five seeds Nystr\"om and the encoder
+\emph{tie within a large run-to-run variance}: out-of-sample is a wash. The lone axis no argument or
+baseline forecloses, end-to-end geometry learning, fails in practice---an optimisation/conditioning
+failure (the contrastive loss stalls and the operator spectrum flattens), not the collapse it
+superficially resembles. Several
+early apparent ``wins'' were artifacts of weak baselines---a poor single random trajectory, and dense
+eigendecomposition where a truncated iterative SVD belongs---which we document explicitly, because
+they manufacture progress that does not exist.
+\end{abstract}
+
+\section{What we tested}
+An MDT operator is a length-$t$ product $\W=\W_t\cdots\W_1$, each step a convex mixture of per-view
+row-stochastic transitions $\W_s=\sum_v a_{sv}\mathbf{P}_v$; its embedding is the truncated SVD of
+$\W$. MDT is transductive and, with a dense product, costs $O(N^3)$. DDM offers a parametric
+encoder. The combination is appealing: a network might give cheaper, out-of-sample, or more accurate
+embeddings. We tested whether it does, and---crucially---\emph{against the baselines a referee would
+demand}, not the convenient ones.
+
+\paragraph{Four axes, and what closes each.}
+A network's embedding can differ from the classical SVD on four axes, and each is closed by an
+argument or by the correct baseline.
+\emph{Accuracy} is closed by a ceiling: a network trained to match the embedding's Gram matrix,
+$\lVert \mathbf{F}\mathbf{F}^\top - \mathbf{G}\rVert^2$, has its global optimum at the truncated SVD
+of $\mathbf{G}$ (Eckart--Young\footnote{$\mathbf{G}$ is symmetric PSD with eigendecomposition
+$\mathbf{G}=\sum_l\sigma_l^2\mathbf u_l\mathbf u_l^\top$ ($\sigma_1^2\!\ge\!\sigma_2^2\!\ge\!\cdots$). As
+$\mathbf{F}$ ranges over $N\times k$ matrices, $\mathbf{F}\mathbf{F}^\top$ ranges over all rank-$k$ PSD
+matrices, and Eckart--Young gives $\min_{\mathrm{rank}\,k}\lVert \mathbf{M}-\mathbf{G}\rVert_F$ at
+$\mathbf{M}^\star=\sum_{l\le k}\sigma_l^2\mathbf u_l\mathbf u_l^\top$, i.e.\ the top-$k$ truncated
+eigendecomposition. Hence the optimal $\mathbf{F}^\star=\mathbf U_{:,1:k}\,\mathrm{diag}(\sigma_{1:k})$
+up to a right orthogonal rotation---exactly the SVD embedding. A parametric $\mathbf F=f_\theta(x)$ can
+approach this optimum but, being a subset of all $N\times k$ matrices, can never beat it.}), so it
+cannot exceed the SVD of the same operator.
+\emph{Cost:} the correct baseline is \textbf{truncated \texttt{svds}} on the operator's sparse action
+(a \texttt{LinearOperator} applying $\W$ by sparse matrix--vector products, never forming $N\times N$).
+\emph{Out-of-sample:} the correct baseline is \textbf{Nystr\"om} extension. Note \texttt{svds} produces
+only a table of values over the training rows---it cannot map a new point---so it is not a competitor
+here; Nystr\"om is the SVD's own out-of-sample extension.
+\emph{End-to-end:} making the embedding a trainable layer under a downstream objective is the one axis
+no baseline forecloses---but it fails in practice (\S\ref{sec:collapse}).
+A \textbf{features-only} $k$-means control isolates how much the operator contributes at all.
+
+\section{Setup: what each scenario changes}
+\paragraph{Baselines.}
+DDM (single view) learns an embedding by Gram-matching to a \emph{fixed} spectral target,
+\begin{equation}
+\min_{\Gamma}\ \big\lVert \Pii^{1/2}\Gamma^\top\!\Gamma\,\Pii^{1/2}
+-(\A^{2t}-\sqrt{\bp}\sqrt{\bp}^\top)\big\rVert_F^2,
+\end{equation}
+with $\A=\mathbf D^{-1/2}\mathbf K_\alpha\mathbf D^{-1/2}$ symmetric and $\bp$ its stationary
+distribution. MDT (multi-view) instead builds the \emph{asymmetric} operator $\W=\W_t\cdots\W_1$,
+$\W_s=\sum_v a_{sv}\mathbf P_v$, $\mathbf P_v=\mathbf D_v^{-1}\mathbf K_v$, and reads its truncated SVD
+$\W=\mathbf U\boldsymbol\Sigma\mathbf V^\top$, $\Psi=\mathbf U_{:,1:k}\boldsymbol\Sigma_{1:k}$
+(transductive).
+
+\paragraph{Unified target.}
+Let $\bp$ be the stationary distribution of $\W$ ($\W^\top\bp=\bp$, $\Pii=\mathrm{diag}(\bp)$) and
+$\A=\Pii^{1/2}\W\Pii^{-1/2}$ its symmetrisation, whose top singular vector is $\sqrt{\bp}$. The
+diffusion-map embedding is the top-$k$ factor of
+\begin{equation}
+\mathbf G=\A\A^\top-\sqrt{\bp}\sqrt{\bp}^\top=\textstyle\sum_{l\ge1}\sigma_l^2\,\mathbf u_l\mathbf u_l^\top .
+\end{equation}
+This $\mathbf G$ is the MDT analogue of DDM's $\A^{2t}-\sqrt{\bp}\sqrt{\bp}^\top$: since $\W$ is
+asymmetric, the symmetric power $\A^{2t}$ is replaced by $\A\A^\top$. Each scenario changes only what
+is \emph{fixed} vs \emph{learned} and the objective (Table~\ref{tab:scenarios}).
+
+\begin{table*}[t]\centering\footnotesize
+\caption{The four scenarios as modifications of DDM/MDT. $S=\mathrm{diag}(\sqrt{\bp})$;
+$\mathbf w_*$ is the operator row of a new point $x_*$ against the training set. Scenarios 1--3 keep
+$\W$ fixed and only change how its SVD embedding is read out or extended; scenario 4 makes $\W$ itself
+trainable, removing the fixed target and collapsing.}
+\label{tab:scenarios}
+\begin{tabular}{@{}p{2.15cm}p{2.7cm}p{3.85cm}p{3.15cm}p{3.05cm}@{}}
+\toprule
+Scenario & fixed / learned & objective & change vs DDM & change vs MDT\\
+\midrule
+1.\ Accuracy (neural SVD) & $\W$ fixed; learn $f_\theta$ & $\min_\theta\lVert S f_\theta f_\theta^\top S-\mathbf G\rVert_F^2$ & $\A^{2t}\!\to\!\A\A^\top$; multi-view input & SVD readout $\to$ NN learns it\\[4pt]
+2.\ Cost (truncated SVD) & $\W$ fixed; no network & top-$k$ \texttt{svds} of $x\!\mapsto\!\W x$ & drop the network & dense $O(N^3)\!\to\!$ matrix-free\\[4pt]
+3.\ Out-of-sample & $\W$ fixed; learn $x_*\!\mapsto\!\psi$ & $f_\theta(x_*)$ vs Nystr\"om $\mathbf w_*^\top\mathbf V$ & use $f_\theta$ for new points & add extension (none in MDT)\\[4pt]
+4.\ End-to-end & learn $\phi_v,a$: $\W(\theta)$ & $\min_\theta\mathcal L_{\mathrm{contr}}(\W(\theta))$ & $\mathbf G\!\to\!$ trainable $\mathbf G(\theta)$ & operator fixed $\to$ learned\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Results}
+
+\subsection{Accuracy: the encoder only matches the SVD (a ceiling)}
+The most seductive early finding was a parametric ``neural SVD'' beating classical eig by up to
+$+0.20$ AMI. It was an artifact of the \emph{decomposition}, not the operator or the network. MDT
+embeds by plain truncated SVD of its operator; the $\sqrt{\bp}$ symmetrisation is DDM's out-of-sample
+machinery, not MDT's, and plays no role here. The $+0.20$ baseline instead used a $\sqrt{\bp}$-weighted
+\emph{dense} eig. Holding the decomposition fixed at truncated \texttt{svds} (Table~\ref{tab:confound}),
+every operator variant---a random trajectory, an unsupervised best-of-eight, the oracle best-of-eight,
+and the neural reproduction---scores within $0.03$ ($0.77$--$0.81$). Trajectory \emph{selection} adds
+nothing once fair: a spectral-energy selector ties a random trajectory (regret to the oracle
+$0.01$--$0.03$), because the near-uniform spectrum makes the eight trajectories nearly equivalent. The
+network merely reproduces the SVD it approximates ($\text{neural}\!\approx\!\text{eig}_{\text{best}}$).
+The operator itself still helps---features-only $k$-means is far weaker ($0.45$ on MNIST-10k)---so
+diffusion contributes, but neither the selection nor the network does.
+
+\begin{table*}[t]\centering\footnotesize
+\caption{The ``$+0.20$ win'' was a decomposition artifact. MDT embeds by plain truncated SVD of its
+operator $\W$ (the $\sqrt{\bp}$ symmetrisation is DDM's out-of-sample machinery, not MDT's, and is not
+used here). With the decomposition held fixed at truncated \texttt{svds}, every operator variant---a
+random trajectory, an unsupervised (spectral-energy) best-of-eight, the oracle (AMI-selected)
+best-of-eight, and the neural reproduction on the fair operator---scores within $0.03$ ($0.77$--$0.81$).
+Trajectory \emph{selection} buys nothing once fair (energy $\approx$ random; regret to the oracle
+$0.01$--$0.03$), and the network merely reproduces the SVD ($\text{neural}\approx\text{eig}_{\text{best}}$
+on the same, energy-selected operator). The operator still beats features-only $k$-means ($0.45$ on
+MNIST-10k), so diffusion contributes---but neither selection nor the network does. The original $+0.20$
+came from a $\sqrt{\bp}$-weighted \emph{dense} eig, now removed.}
+\label{tab:confound}
+\begin{tabular}{l r r r r r r}
+\toprule
+Dataset & classes & features only & eig (random)$^\dagger$ & $\text{eig}_{\text{best}}$ (fair)$^\ddagger$ & $\text{eig}_{\text{best}}$ (oracle) & neural (fair)$^\S$\\
+\midrule
+MNIST-4   & 4   & 0.707 & 0.789 & 0.783 & 0.808 & 0.782\\
+MNIST-10k & 10  & 0.450 & 0.786 & 0.787 & 0.798 & 0.790\\
+ALOI      & 100 & 0.737 & 0.773 & 0.767 & 0.787 & 0.795\\
+\bottomrule
+\end{tabular}\\[2pt]
+{\footnotesize All embeddings are plain truncated \texttt{svds} of the MDT operator (no $\sqrt{\bp}$).
+$^\dagger$ mean over $8$ random trajectories. $^\ddagger$ best of $8$ by top-$k$ spectral energy
+(unsupervised, deployable). oracle $=$ best of $8$ by AMI (uses labels). $^\S$ neural on the same
+energy-selected (fair) operator as $\text{eig}_{\text{best}}$ (fair); it reproduces \texttt{svds}
+(within ${\pm}0.03$ run-to-run).}
+\end{table*}
+
+\subsection{Cost: a sparse truncated SVD is $\sim$300$\times$ faster}
+The ``linear-time beats $O(N^3)$'' claim compared the network against \emph{dense} eigendecomposition
+---a baseline nobody uses for a top-$k$ embedding. The correct method, truncated \texttt{svds} on the
+same sparse operator action, is sub-second at $N=10{,}000$ and \emph{equally accurate}, while the
+network needs $\sim$90\,s (Table~\ref{tab:scale}). The neural method is not a fast approximation; it is
+a slow one.
+
+\begin{table}[t]\centering\footnotesize
+\caption{Scaling on MNIST-10k. Truncated \texttt{svds} on the sparse operator action dominates both
+the strawman (dense \texttt{eigh}) and the neural network on time, at equal accuracy.}
+\label{tab:scale}
+\begin{tabular}{r rrr c}
+\toprule
+& \multicolumn{3}{c}{wall-clock time} & accuracy\\
+\cmidrule(lr){2-4}
+$N$ & dense \texttt{eigh} & \texttt{svds} & neural & AMI (svds\,$\approx$\,neural)\\
+\midrule
+2\,000  & 4.3\,s  & 0.07\,s & 18.5\,s & 0.74\\
+4\,000  & 14.6\,s & 0.11\,s & 40.0\,s & 0.79\\
+8\,000  & 98.0\,s & 0.30\,s & 71.3\,s & 0.81\\
+10\,000 & ---     & 0.31\,s & 89.4\,s & 0.81\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Out-of-sample (DDM's motivation): a wash within run-to-run noise}
+\label{sec:oos}
+This is the use case that justified involving DDM: MDT is transductive, so embedding new points needs
+\emph{some} extension, and \texttt{svds} provides none. The contest is the learned encoder against the
+training-free Nystr\"om extension of the same operator. A single-run comparison of a
+\emph{Gram-matching} encoder (Table~\ref{tab:oos}) appears to favour Nystr\"om, but a \emph{multi-seed}
+study (Table~\ref{tab:oos2}) shows this is not real: across five seeds, Nystr\"om, a regression encoder
+on raw features, and a regression encoder on the affinity row all \emph{tie within a large run-to-run
+variance} ($\sigma\!\approx\!0.06$--$0.10$ on the small/heterogeneous sets). Any single-seed ``win'' or
+``loss''---including an earlier $+0.12$ for the encoder on MSRC---is inside that noise.
+
+Two controls explain the non-result. (i)~A sample-size sweep gave a \emph{flat} gap over
+$N_{\text{train}}\!\in\![200,1400]$, ruling out sample size. (ii)~The affinity-row encoder reproduces
+Nystr\"om almost exactly---as expected, since with that input the optimal map \emph{is} Nystr\"om's
+linear projection. Where heterogeneous-view data does hurt (Wikipedia), a per-view ablation shows the
+culprit is \emph{fusion}, not the extension method: the text view alone clusters at $0.51$, the image
+view at $0.05$, and fusing them \emph{dilutes} to $0.37$ for every method. The honest verdict:
+\textbf{Nystr\"om is never beaten}. The encoder---whether Gram-matching or regression, both
+multi-seeded---\emph{ties} Nystr\"om where features are informative (MSRC, Handwritten: within
+$\pm0.01$--$0.07$) and \emph{loses} where they are not (Wikipedia: Gram encoder $0.29$ vs $0.38$, gap
+beyond noise). It never wins; out-of-sample is a wash in Nystr\"om's favour, and all methods need the
+train-set SVD.
+
+\begin{table}[t]\centering\footnotesize
+\caption{Out-of-sample AMI, \emph{single run}: a Gram-matching encoder vs Nystr\"om. The apparent gaps
+are \emph{within} the run-to-run variance quantified in Table~\ref{tab:oos2}; see text.}
+\label{tab:oos}
+\begin{tabular}{l r r}
+\toprule
+Dataset & Nystr\"om & deep (Gram-match)\\
+\midrule
+MSRC-v5       & \textbf{0.689} & 0.642\\
+Handwritten   & \textbf{0.885} & 0.862\\
+Wikipedia     & \textbf{0.505} & 0.348\\
+UCI           & 0.836 & 0.839\\
+OutdoorScene  & 0.482 & 0.482\\
+Caltech101-7  & 0.522 & \textbf{0.555}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]\centering\footnotesize
+\caption{Out-of-sample AMI over \emph{5 seeds} (mean$\pm$std). Nystr\"om, a regression encoder on raw
+features, and one on the affinity row all \emph{tie within the std}: out-of-sample is a wash. The
+affinity encoder matches Nystr\"om by construction. Single-seed effects (cf.\ Table~\ref{tab:oos}) are
+noise.}
+\label{tab:oos2}
+\begin{tabular}{l c c c}
+\toprule
+Dataset & Nystr\"om & deep (feat.) & deep (aff.)\\
+\midrule
+MSRC-v5     & $0.648\!\pm\!0.091$ & $0.652\!\pm\!0.061$ & $0.652\!\pm\!0.045$\\
+Wikipedia   & $0.303\!\pm\!0.101$ & $0.255\!\pm\!0.073$ & $0.305\!\pm\!0.106$\\
+Handwritten & $0.864\!\pm\!0.032$ & $0.862\!\pm\!0.032$ & $0.858\!\pm\!0.032$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{End-to-end: learning the geometry fails (and not the way one expects)}\label{sec:collapse}
+Letting the network learn the per-view kernels and fusion weights under a contrastive objective
+collapses clustering quality, well below a fixed random operator (Table~\ref{tab:collapse}). The
+intuitive story---``the geometry collapses to a constant, gaming the loss''---is \emph{wrong}, as
+instrumenting the training shows. Over 200 steps on Caltech101-7: (a)~the contrastive loss barely
+moves ($58.36\!\to\!58.09$, ${<}1\%$), so the objective is \emph{not} being minimised---nothing is
+``gamed''; (b)~the operator's effective rank \emph{rises} from ${\sim}1$ to ${\sim}850$ (of $N{=}1474$)
+and the learned features \emph{spread} (std $1.9\!\to\!7.8$)---the opposite of a rank-one / constant
+collapse. The real failure is one of \emph{optimisation and conditioning}: gradient descent through the
+kernel$\to$product$\to$contrastive chain stalls, and the small drift it does make \emph{flattens the
+operator's singular spectrum}, erasing the spectral gap that a top-$k$ embedding relies on, so AMI
+falls. The stall is robust to tuning---sweeping the learning rate over $[0.001,0.2]$ and to 600 steps leaves
+the loss flat ($<1\%$) in \emph{every} case---which is the signature of a flat landscape, not a
+step-size problem. A landscape analysis pins the root cause: the $t$-step diffused operator has
+entries ${\approx}1/N$ ($\overline{|W_{ij}|}{=}6.8\mathrm{e}{-}4$), so the contrastive logits
+$\exp(W)$ are \emph{uniform}---$\mathrm{softmax}(W)$ has mean max-probability $0.00068$, exactly
+$1/N$. The objective therefore sits in a dead-flat region, with vanishing gradients (fusion weights
+$\lVert\nabla_a\rVert{\approx}10^{-5}$); no learning rate helps because there is essentially no
+gradient. Confirming this, introducing a logit temperature ($\exp(\tau W)$, $\tau{=}20$) unsticks the
+loss ($-8.7\%$ vs $-0.5\%$) and lifts AMI ($0.07{\to}0.13$)---so the failure is a \emph{logit-scale}
+problem, fixable by sharpening but not by tuning lr. Even unstuck it stays below the fixed-operator
+baseline, so end-to-end remains not worth it; we now simply know \emph{why}.
+(Separately, in the \emph{imitative} setting the $\sqrt{\bp}$ weighting and a batch-normalised head are
+needed to avoid the $\mathbf{F}{=}0$ saddle of the Gram loss.)
+
+\begin{table}[t]\centering\footnotesize
+\caption{End-to-end learning of the geometry (learned kernels + weights) fails, worse than fixed
+operators. AMI. The failure is optimisation/conditioning (flat loss, spectrum flattening), not the
+rank-one collapse the numbers might suggest---see text.}
+\label{tab:collapse}
+\setlength{\tabcolsep}{5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Dataset & fixed+random & fixed+learned wts & \textbf{learned geom.}\\
+\midrule
+MSRC-v5      & 0.682 & 0.470 & 0.328\\
+Caltech101-7 & 0.535 & 0.410 & \textbf{0.049}\\
+OutdoorScene & 0.570 & 0.463 & \textbf{0.005}\\
+UCI          & 0.822 & 0.914 & 0.751\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\paragraph{Mitigations, and why they do not rescue the method.}
+The wash-out has an obvious countermeasure---diffuse less---so we test two. (a)~\emph{Short product}:
+shrink the trajectory length $t$, keeping $W$ farther from the (uniform) stationary operator.
+(b)~\emph{Laziness gate}: replace each step by a lazy walk $S_s'=g_s\,S_s+(1-g_s)\mathbf I$ with a
+learnable $g_s=\sigma(\theta_s)\in[0,1]$, penalised by $\lambda\sum_s g_s$---a differentiable surrogate
+for choosing $t$, since the integer $t$ carries no gradient. The $t$-sweep is striking:
+$t{=}1$ is \emph{best on every dataset} and AMI falls monotonically with $t$
+(Table~\ref{tab:collapse-fair}), often by a wide margin (MSRC $0.53$ at $t{=}1$ vs $0.24$ at
+$t{=}4$)---the learned model always wants \emph{minimal} diffusion,
+so MDT's multi-step machinery never helps it. This is the mixing-vs-hops tension: the well-connected
+kNN graphs mix so fast that even two hops over-blur classes that are essentially a one-hop property.
+Yet three caveats hold. (i)~\emph{Passive}: the contrastive loss still barely moves ($-0.1$ to
+$-1.1\%$), so any gain is the operator resting near a structured single-hop/identity regime, not the
+optimiser learning. (ii)~\emph{At least one hop is needed}: gating toward the identity ($\lambda{=}1$,
+$\overline g\!\to\!0.16$, \emph{less} than one hop) collapses OutdoorScene ($0.072$) where a single
+full hop ($t{=}1$) scores $0.34$. (iii)~\emph{It never beats a fair baseline}: against best-of-eight
+trajectories (5 seeds), even the best learned setting ($t{=}1$) \emph{loses} on 3/4---MSRC ($0.53$ vs
+$0.71$), Caltech ($0.23$ vs $0.62$), OutdoorScene ($0.34$ vs $0.60$)---and merely \emph{ties} on the
+well-conditioned UCI ($0.867$ vs $0.854$, bands overlap). The apparent UCI ``win'' over
+\texttt{fixed+random} was only against the single-trajectory strawman. The mitigations thus confirm the
+wash-out mechanism and reduce learned geometry to a single-hop operator, but do not make it beat a
+fairly-tuned fixed operator; the negative result stands.
+
+\begin{table}[t]\centering\footnotesize
+\caption{$t$-sweep of three methods on the four collapse datasets (AMI). \emph{fixed} MDT = best-of-8
+length-$t$ operator; \emph{imit.} = the $\sqrt{\bp}$-Gram encoder trained to reproduce that fixed operator;
+\emph{end-to-end} = learns the operator under the contrastive objective (Scenario~4, 5-seed mean). Fixed
+and imit are \emph{stable} across $t$---imit reproduces fixed at every length---while end-to-end
+\emph{collapses} as $t$ grows (well-connected kNN graphs over-mix past one hop), except UCI (one dominant
+view). Learning the \emph{encoder} of a fixed operator works; learning the \emph{operator} under the
+contrastive loss does not. (Weak-random and gated-$\lambda{=}1$ variants in text.)}
+\label{tab:collapse-fair}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll cccc@{}}
+\toprule
+Dataset & method & $t{=}1$ & $t{=}2$ & $t{=}3$ & $t{=}4$\\
+\midrule
+MSRC-v5      & fixed MDT      & $.704$ & $.736$ & $.728$ & $.720$\\
+             & imit.\ (Gram)  & $.712$ & $.724$ & $.701$ & $.706$\\
+             & end-to-end     & $.533$ & $.309$ & $.277$ & $.239$\\
+\midrule
+Caltech101-7 & fixed MDT      & $.547$ & $.588$ & $.619$ & $.620$\\
+             & imit.\ (Gram)  & $.643$ & $.545$ & $.647$ & $.644$\\
+             & end-to-end     & $.234$ & $.094$ & $.070$ & $.085$\\
+\midrule
+OutdoorScene & fixed MDT      & $.629$ & $.633$ & $.606$ & $.598$\\
+             & imit.\ (Gram)  & $.579$ & $.561$ & $.522$ & $.525$\\
+             & end-to-end     & $.340$ & $.001$ & $.098$ & $.177$\\
+\midrule
+UCI          & fixed MDT      & $.846$ & $.834$ & $.830$ & $.840$\\
+             & imit.\ (Gram)  & $.841$ & $.810$ & $.840$ & $.828$\\
+             & end-to-end     & $.867$ & $.837$ & $.763$ & $.730$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Is the collapse a build artifact? A controlled kernel ablation.}
+Our end-to-end model deviates from both references in a way worth isolating: it makes the kernel
+learnable through a per-view feature projection ($\mathrm{Linear}(d,32)$, randomly initialised),
+whereas MDT builds kernels on \emph{raw} features and DDM's network outputs the embedding
+directly---neither projects kernel inputs. Two consequences follow. (a)~The \emph{random projection},
+not the operator, drove the original collapse: re-initialising the projection to the identity
+(raw-feature distances) and adding a logit temperature $\tau$ removes it---the \emph{untrained} operator
+then matches fixed MDT on every dataset (Table~\ref{tab:collapse-ablation}, ``init''). (b)~Dense vs.\
+sparse kernel is a \emph{wash}: holding init, bandwidth, $t$, $\tau$ and seed fixed and toggling only
+the operator's kNN mask, the two move AMI only modestly and with no consistent sign (across 12
+configurations), and \emph{neither collapses at init nor escapes collapse when trained}. Note the two
+kernels are \emph{not} numerically interchangeable in general: on the low-dimensional views the tight
+max-min bandwidth makes the dense Gaussian decay to ${\approx}0$ off-neighbourhood (the kNN mask keeps
+$100\%$ of the mass), but on the high-dimensional views ($d{=}512,576$) the mask drops real
+off-neighbourhood mass (only ${\sim}5$--$9\%$ kept). That the outcome is a wash \emph{even though the
+kernels genuinely differ} is the stronger point. The robust,
+kernel-independent conclusion: with a correctly-built operator whose untrained state already equals
+fixed MDT, gradient-training on the contrastive objective still \emph{degrades} clustering (23/24
+controlled runs)---the objective, not the kernel or the conditioning, is misaligned with clustering.
+The faithful way to couple MDT and DDM is therefore the imitative encoder (Gram-matching a fixed MDT
+embedding), not end-to-end kernel learning.
+
+\begin{table}[t]\centering\footnotesize
+\caption{Controlled dense-vs-sparse kernel ablation ($t{=}4$, $\tau{=}20$; identity init, max-min
+bandwidth, all else fixed; AMI). ``init'' = untrained operator. Both kernels' untrained operators match
+fixed MDT---\emph{neither collapses}; training degrades both far below init; dense $\approx$ sparse. The
+failure is the objective, not the kernel.}
+\label{tab:collapse-ablation}
+\setlength{\tabcolsep}{5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l c cc cc@{}}
+\toprule
+& fixed & \multicolumn{2}{c}{sparse kNN} & \multicolumn{2}{c}{dense}\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Dataset & MDT & init & trained & init & trained\\
+\midrule
+MSRC-v5      & $0.720$ & $0.624$ & $0.457$ & $0.658$ & $0.492$\\
+OutdoorScene & $0.598$ & $0.562$ & $0.335$ & $0.530$ & $0.312$\\
+UCI          & $0.840$ & $0.769$ & $0.506$ & $0.802$ & $0.390$\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{What does survive (and does not need a network)}
+Two minor positive findings remain, both classical and both cheap with \texttt{svds}; both held up
+under multi-seed scrutiny better than the OOS or collapse claims did.
+\emph{(i)~Consensus} (\emph{robust}): averaging the diffusion targets over trajectories beats any
+single trajectory on all datasets, and over 5 seeds the gain \emph{exceeds} the run-to-run std,
+from $+0.01$ (MSRC, $0.70{\to}0.72$) to $+0.14$ (100Leaves, $0.77{\to}0.90$); it also removes the
+selection step.
+\emph{(ii)~Selection criterion} (\emph{weak}): the silhouette index correlates with downstream AMI
+somewhat better than the Calinski--Harabasz index of the original MDT, but the effect is modest---over
+seeds, $\rho=0.55\pm0.20$ vs $0.40\pm0.24$, an advantage that sits \emph{within} the large run-to-run
+variance, not the clean $2\times$ a single run suggested. Neither finding needs the parametric
+machinery; both are operations on the SVD embedding.
+
+\emph{A better internal-quality index.} Pursuing the selection question further, we compared three
+label-free trajectory-selection indices on the canonical kernel over a pool of $30$ random
+trajectories $\times 3$ seeds (Table~\ref{tab:iq}): MDT's contrastive Internal Quality index
+(Eq.~19--20 of the MDT paper), silhouette, and a \emph{spectral energy} index---the fraction of the
+operator's singular-value energy carried by its top-$k$ modes. The spectral index is the only reliable
+ranker (mean $\rho=+0.23$ vs $-0.01$ and $-0.05$; the other two are uncorrelated with quality on this
+protocol, so silhouette's edge over Calinski--Harabasz is itself protocol-dependent) and gives the
+lowest selection regret on $5/7$ structured datasets. It is \emph{not} universal: on heterogeneous-view
+Wikipedia-test (one near-useless view) it selects a high-energy near-degenerate trajectory
+(regret $0.32$) where the contrastive index succeeds---the same fusion pathology that dilutes MDT
+there. The gain is \emph{MDT-side, not DDM}: DDM's defining $\sqrt{\bp}$ weighting is inert here, because
+the diffused operator's near-uniform rows make $\bp\!\approx\!$ uniform and $\A\!\approx\!\W$
+(spectral energy of $\A$ equals that of $\W$ on every dataset tested). One property---near-uniform
+diffused operators---thus explains three failures at once: the end-to-end stall (\S\ref{sec:collapse}),
+the weakness of the contrastive index, and the inertness of the $\sqrt{\bp}$ weighting.
+
+Table~\ref{tab:iq} uses the SVD embedding dimension $d{=}k$. Raising it is a \emph{mirage}: at
+$d{=}64$ the selector metrics \emph{improve} (mean energy $\rho\!:\!{+}0.23\!\to\!{+}0.53$, regret
+$0.12\!\to\!0.08$) yet the \emph{deployed} AMI (oracle$-$regret) \emph{falls} ($0.54\!\to\!0.52$ and
+lower at $d{=}128$), because embedding into more coordinates of a flat-spectrum operator lowers the
+oracle itself---a fourth face of the same near-uniformity, and a reminder that a shrinking regret can
+track a collapsing ceiling rather than a better result. $d{=}k$ is optimal.
+
+\emph{(iii)~Operator hyperparameters do not give a deployable gain.} Tuning the operator itself
+(kernel bandwidth---global vs.\ self-tuning local scaling---graph degree $k_{nn}$, and
+normalisation) has \emph{oracle} headroom (best grid cell $+0.06$ AMI over the paper kernel on MSRC),
+but it is unreachable without labels: silhouette, which ranks trajectories acceptably, mis-ranks these
+configurations, preferring near-degenerate high-silhouette partitions (on UCI a $0.80$-silhouette cell
+scores only $0.17$ AMI), so unsupervised selection \emph{regresses below} the untuned baseline
+($-0.01$ on MSRC). We report this because an early version, benchmarked against a kernel that dropped
+the self-loop (lazy-walk) term, showed large apparent gains ($+0.18$)---another strawman baseline, now
+corrected. Consensus remains the only deployable operator-level gain.
+
+\begin{table}[t]\centering\scriptsize\setlength{\tabcolsep}{2.6pt}
+\caption{Unsupervised MDT trajectory selection on the canonical kernel: Spearman $\rho$ with oracle AMI
+and selection regret (oracle$-$selected AMI; lower is better), over $30$ random trajectories $\times 3$
+seeds, on structured datasets (oracle AMI$\ge0.35$). Indices: MDT's contrastive Internal Quality
+$Q_c$, silhouette (sil), and the \textbf{spectral energy} index (\textbf{en}). Spectral energy is the
+only positive ranker and lowest-regret on $5/7$; it fails on heterogeneous-view Wikipedia-test.}
+\label{tab:iq}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l ccc ccc@{}}
+\toprule
+& \multicolumn{3}{c}{Spearman $\rho$} & \multicolumn{3}{c}{selection regret}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Dataset & $Q_c$ & sil & \textbf{en} & $Q_c$ & sil & \textbf{en}\\
+\midrule
+MSRC-v5        & $-.25$ & $-.17$ & $\mathbf{.49}$ & $.072$ & $.097$ & $\mathbf{.043}$\\
+Yale           & $-.12$ & $-.59$ & $.11$          & $.073$ & $.131$ & $\mathbf{.064}$\\
+BBCSport       & $.13$  & $-.04$ & $\mathbf{.60}$ & $.125$ & $.164$ & $\mathbf{.019}$\\
+Caltech101-7   & $-.12$ & $.11$  & $\mathbf{.36}$ & $.047$ & $.467$ & $\mathbf{.043}$\\
+Handwritten    & $.24$  & $.05$  & $.19$          & $\mathbf{.050}$ & $.365$ & $.209$\\
+UCI            & $-.28$ & $-.30$ & $\mathbf{.36}$ & $.369$ & $.404$ & $\mathbf{.121}$\\
+Wikipedia-test & $.33$  & $.61$  & $-.47$         & $\mathbf{.000}$ & $\mathbf{.000}$ & $.315$\\
+\midrule
+mean           & $-.01$ & $-.05$ & $\mathbf{.23}$ & $.105$ & $.233$ & $.116$\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{Reproduction, external baselines, and scale}
+The gaps a first reading flags are closed. \emph{Reproduction:} replicating the MDT paper's exact
+protocol---kNN kernel with $k_{nn}{=}\lfloor\log N\rfloor$ and max-of-row-min bandwidth, knee-selected
+diffusion times, \texttt{svds} embedding, AMI over 20 KMeans runs, full data---our pipeline reproduces
+their Table~4: on 100Leaves we obtain AD $0.801$, ID $0.733$, MVD $0.814$ against the paper's $0.800$,
+$0.738$, $0.824$. \emph{Field baselines (fair protocol):} under that same protocol the MDT consensus
+embedding leads AD/ID/MVD/MDT-Rand on all three shared datasets (Table~\ref{tab:baselines})---but only
+by $+0.04$ to $+0.08$. (A weaker re-implementation we used initially inflated this gap by crippling the
+baselines; the fair numbers below are modest.) \emph{Scale:} on synthetic data the sparse-operator
+truncated \texttt{svds} runs at $N{=}10^5$ in ${\sim}27$\,s where a dense decomposition is infeasible
+($10^{10}$ entries, $O(N^3)$). \emph{Multi-seed:} every result above carries error bars. (Scope: the
+scale test is synthetic---compute-feasibility, not accuracy at scale.)
+
+\begin{table}[t]\centering\footnotesize
+\caption{Clustering AMI under the MDT paper's exact protocol, which our pipeline reproduces (AD/ID/MVD
+on 100Leaves match Table~4 within ${\sim}0.01$). MDT consensus leads on all three, by a modest
+$+0.04$--$+0.08$.}
+\label{tab:baselines}
+\setlength{\tabcolsep}{5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+Dataset & AD & ID & MVD & MDT-Rand & MDT-cons.\\
+\midrule
+MSRC-v5      & $0.643$ & $0.616$ & $0.630$ & $0.625$ & $\mathbf{0.686}$\\
+100Leaves    & $0.801$ & $0.733$ & $0.814$ & $0.656$ & $\mathbf{0.894}$\\
+Caltech101-7 & $0.570$ & $0.440$ & $0.565$ & $0.590$ & $\mathbf{0.609}$\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{Lessons}
+\begin{itemize}\itemsep2pt
+\item \textbf{The embedding's ceiling is the SVD.} A parametric network can at best match the top-$k$
+subspace of its target operator; it cannot exceed it. Any reported excess is a baseline artifact.
+\item \textbf{Strawman baselines manufacture progress.} A bad single trajectory and dense
+\texttt{eigh} made the network look both more accurate and faster than it is. Truncated \texttt{svds}
+on the sparse operator action, and a features-only control, dissolve the apparent gains.
+\item \textbf{Out-of-sample is a wash, and single runs lie.} Over five seeds, Nystr\"om and both
+encoder variants tie within a large variance (Table~\ref{tab:oos2}); the single-seed ``wins'' and
+``losses'' (including a $+0.12$ for the encoder on MSRC) are noise. No extension is fundamentally
+ahead, and all need the train-set SVD.
+\item \textbf{Verify the mechanism, not just the number.} The end-to-end ``collapse'' is not a collapse
+at all---instrumenting it shows a stalled loss and a \emph{flattening} spectrum, not the rank-one
+degeneracy the AMI suggested. Asserted mechanisms must be measured.
+\end{itemize}
+
+\section{Conclusion}
+For embedding multi-view diffusion operators, the right tool is a sparse truncated SVD: it is faster
+than dense decomposition, faster than the neural network by two orders of magnitude, and equally
+accurate. The parametric and end-to-end variants of DDM$\times$MDT add cost (and, when learning the
+geometry, instability) without benefit. We report this so the next attempt starts from the correct
+baselines.
+
+\begin{thebibliography}{9}\footnotesize
+\bibitem{ddm} S.~Garc\'ia-Heredia, \'A.~Fern\'andez, C.~M.~Ala\'iz.
+\emph{Deep Diffusion Maps}. arXiv:2505.06087, 2025.
+\bibitem{mdt} G.~Debaussart-Joniec, A.~Kalogeratos.
+\emph{Multi-view diffusion geometry using intertwined diffusion trajectories}. arXiv:2512.01484, 2025.
+\end{thebibliography}
+
+\end{document}

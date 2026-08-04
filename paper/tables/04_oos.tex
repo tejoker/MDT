@@ -1,0 +1,38 @@
+\begin{table}[H]\centering\footnotesize
+\caption{Out-of-sample AMI over 5 seeds (Scenario 3).}
+\label{tab:oos}
+\begin{tabular}{l c c}
+\toprule
+Dataset & Nystr\"om & deep ($\sqrt{\bp}$-Gram)\\
+\midrule
+MSRC-v5      & $0.685\!\pm\!0.021$ & $0.648\!\pm\!0.093$\\
+Handwritten  & $0.859\!\pm\!0.028$ & $0.866\!\pm\!0.030$\\
+Wikipedia    & $0.307\!\pm\!0.102$ & $0.295\!\pm\!0.057$\\
+UCI          & $0.801\!\pm\!0.054$ & $0.826\!\pm\!0.053$\\
+OutdoorScene & $0.490\!\pm\!0.041$ & $0.480\!\pm\!0.040$\\
+Caltech101-7 & $0.525\!\pm\!0.044$ & $0.527\!\pm\!0.043$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Setup.} A held-out test split is embedded and clustered by two out-of-sample extensions
+of the same fixed operator $\W$ (mean$\pm$std over 5 seeds; OutdoorScene 4, one seed dropped to a
+degenerate view). Nystr\"om = the SVD's own training-free extension: form the new point's operator
+row $\mathbf w_*$ against the training set and project it onto the training singular vectors,
+$\psi(x_*)=\mathbf w_*^\top\mathbf V$. deep ($\sqrt{\bp}$-Gram) = the DDM encoder $f_\theta$ (one
+MLP branch per view), the same encoder for every dataset, with no feature/affinity variants. It is
+trained by $\sqrt{\bp}$-Gram matching: let $\bp$ be the stationary distribution of $\W$
+($\bp^\top\W=\bp^\top$), $\A=\Pii^{1/2}\W\Pii^{-1/2}$ its $\sqrt{\bp}$-symmetrised form, and
+$\mathbf G=\A\A^\top-\sqrt{\bp}\sqrt{\bp}^\top$ the target Gram (with the trivial top mode $\sqrt{\bp}$
+removed). The loss makes the encoder's $\sqrt{\bp}$-scaled Gram match it,
+$\min_\theta\big\lVert(\sqrt{\bp}\!\odot\!F)(\sqrt{\bp}\!\odot\!F)^\top-\mathbf G\big\rVert_F^2$,
+$F=f_\theta(X)$. By Eckart--Young its optimum is the top-$k$ eigenspace of $\mathbf G$ (the diffusion-map
+embedding), so the net learns that embedding as a function and extends to new points by a forward
+pass. The $\sqrt{\bp}$ scaling is essential, not cosmetic: a constant (collapsed) embedding lands exactly
+on the removed $\sqrt{\bp}\sqrt{\bp}^\top$ mode, so it is penalised; drop it and the encoder collapses to
+a constant (verified here: AMI $\to0.02$).
+
+\noindent\textbf{Result.} Over 5 seeds Nystr\"om and the encoder tie within one std on every
+dataset (row gaps $\le0.04$, inside the $\pm0.02$--$0.10$ spreads): out-of-sample is a wash. The
+single-run gaps that once looked decisive are seed noise. A faithfully-trained encoder does not beat the
+SVD's free Nystr\"om extension; at best it reproduces it.

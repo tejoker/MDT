@@ -1,0 +1,31 @@
+\begin{table}[H]\centering\footnotesize
+\caption{End-to-end learning of the geometry fails (Scenario 4).}
+\label{tab:collapse}
+\setlength{\tabcolsep}{5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Dataset & fixed+random & fixed+learned wts & \textbf{learned geom.}\\
+\midrule
+MSRC-v5      & 0.682 & 0.470 & 0.328\\
+Caltech101-7 & 0.535 & 0.410 & \textbf{0.049}\\
+OutdoorScene & 0.570 & 0.463 & \textbf{0.005}\\
+UCI          & 0.822 & 0.914 & 0.751\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\noindent\textbf{Setup.} AMI as progressively more of the operator is made trainable (left$\to$right).
+fixed+random: the per-view kernels $P_v$ (Gaussian kNN affinities) and the fusion are both fixed,
+a random convex trajectory, no learning. fixed+learned wts: keep the kernels $P_v$ fixed and
+learn only the mixing weights, the $t\times V$ matrix $a$ (one softmax over views per step) that
+convexly combines the fixed per-view walks, $\W=\prod_s\big(\sum_v a_{sv}P_v\big)$, by Adam on the
+contrastive loss (positive pairs $=$ kernel neighbours). learned geom.: also learn the geometry
+itself: a per-view feature map $\phi_v$ defines each kernel $P_v(\phi_v)$, so both the kernels
+and $a$ are trained end-to-end under the same loss (now even the Gram target moves). Four
+datasets; bold $=$ near-zero collapse.
+
+\noindent\textbf{Result.} Accuracy falls monotonically as more is learned: fixed $>$ learned-weights $>$
+fully-learned (near-zero on Caltech/OutdoorScene). Learning the operator hurts. The mechanism is
+optimisation/conditioning (flat loss, spectrum flattening), not the literal rank-one collapse the
+numbers suggest.
