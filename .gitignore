@@ -105,3 +105,6 @@ Thumbs.db
 *.out
 commands.txt
 experiments/run_experiments-sbatch.sh
+
+# LaTeX build artefacts (paper/); .log and .out are already covered above
+*.aux
