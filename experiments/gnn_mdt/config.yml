@@ -1,0 +1,24 @@
+data:
+  path: /tmp/Multi-view-datasets
+  datasets: [MSRC-v5, Handwritten, Wikipedia, UCI, OutdoorScene, Caltech101-7]
+  split: 0.7
+  cap_train: 800
+  cap_test: 400
+
+mdt:
+  steps: 4
+  trajectories: 8
+  knn: auto
+
+gnn:
+  hidden: 128
+  epochs: 100
+  learning_rate: 0.003
+  weight_decay: 0.0001
+  patience: 40
+  variants: [teacher_gnn, teacher_mlp, teacher_shuffled, gae_uniform, gae_learned, gae_mlp, gae_shuffled, dgi_uniform, dgi_learned]
+
+evaluation:
+  seeds: [0, 1, 2, 3, 4]
+  min_effect: 0.02
+  output: results/gnn_mdt/metrics.jsonl
