@@ -1,0 +1,283 @@
+{
+  "features": {
+    "train_ami": {
+      "mean": 0.5689366698952576,
+      "std": 0.2593358283166315
+    },
+    "test_ami": {
+      "mean": 0.5672962342201279,
+      "std": 0.25894233477652184
+    },
+    "inductive_ami": {
+      "mean": 0.579612766070237,
+      "std": 0.26774063075895144
+    },
+    "train_seconds": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "fidelity": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  },
+  "mdt_consensus": {
+    "train_ami": {
+      "mean": 0.6390830897306314,
+      "std": 0.1737021012903109
+    },
+    "test_ami": {
+      "mean": 0.6454139289012806,
+      "std": 0.16414172615498593
+    },
+    "inductive_ami": {
+      "mean": 0.6372231048621283,
+      "std": 0.179440300233463
+    },
+    "train_seconds": {
+      "mean": 2.3747350562332787,
+      "std": 0.9865909590018915
+    },
+    "fidelity": {
+      "mean": 0.0,
+      "std": 0.0
+    }
+  },
+  "mdt_nystrom": {
+    "train_ami": {
+      "mean": 0.6058759393650953,
+      "std": 0.20462646945555996
+    },
+    "test_ami": {
+      "mean": 0.6025928884973275,
+      "std": 0.19480773367076376
+    },
+    "inductive_ami": {
+      "mean": 0.5928057130767523,
+      "std": 0.20572371534382589
+    },
+    "train_seconds": {
+      "mean": 0.18687404883332118,
+      "std": 0.08261193102312579
+    },
+    "fidelity": {
+      "mean": 1.0,
+      "std": 0.0
+    }
+  },
+  "teacher_mlp": {
+    "train_ami": {
+      "mean": 0.6152878757697712,
+      "std": 0.1990754026713138
+    },
+    "test_ami": {
+      "mean": 0.6266879264817917,
+      "std": 0.20037635130098205
+    },
+    "inductive_ami": {
+      "mean": 0.6082190733912697,
+      "std": 0.20685652719854228
+    },
+    "train_seconds": {
+      "mean": 1.000610204700024,
+      "std": 0.43197629204368077
+    },
+    "fidelity": {
+      "mean": 0.990434197584788,
+      "std": 0.010119154014179652
+    }
+  },
+  "teacher_mlp_pair": {
+    "train_ami": {
+      "mean": 0.6129570187914698,
+      "std": 0.18980801383623258
+    },
+    "test_ami": {
+      "mean": 0.6305141157324912,
+      "std": 0.1893351680385723
+    },
+    "inductive_ami": {
+      "mean": 0.6111690151595055,
+      "std": 0.19216254684688183
+    },
+    "train_seconds": {
+      "mean": 1.301979521166686,
+      "std": 0.5043010471362399
+    },
+    "fidelity": {
+      "mean": 0.9054662724335988,
+      "std": 0.06749241768812153
+    }
+  },
+  "teacher_mlp_pair_recycle": {
+    "train_ami": {
+      "mean": 0.6144899422272736,
+      "std": 0.1905193819243575
+    },
+    "test_ami": {
+      "mean": 0.6286144429813031,
+      "std": 0.19181232441469173
+    },
+    "inductive_ami": {
+      "mean": 0.6145605556306469,
+      "std": 0.18955319161091433
+    },
+    "train_seconds": {
+      "mean": 1.9317634595999456,
+      "std": 0.8673910830884485
+    },
+    "fidelity": {
+      "mean": 0.8997963408629099,
+      "std": 0.06930283082317748
+    }
+  },
+  "teacher_mlp_recycle": {
+    "train_ami": {
+      "mean": 0.6121171547435174,
+      "std": 0.20129693790147507
+    },
+    "test_ami": {
+      "mean": 0.6217464489670709,
+      "std": 0.20242077319790344
+    },
+    "inductive_ami": {
+      "mean": 0.6074602574785092,
+      "std": 0.2113375260271946
+    },
+    "train_seconds": {
+      "mean": 1.623350893800019,
+      "std": 0.8049770461642123
+    },
+    "fidelity": {
+      "mean": 0.9907094836235046,
+      "std": 0.00994816185758342
+    }
+  },
+  "decisions": {
+    "teacher_oos": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "teacher_message_passing": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "teacher_fidelity": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "gae_vs_consensus": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "gae_message_passing": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "gae_graph_signal": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "teacher_graph_signal": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "gae_learned_fusion": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "dgi_vs_consensus": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "dgi_learned_fusion": {
+      "effect": null,
+      "std": null,
+      "pairs": 0,
+      "datasets": 0,
+      "verdict": "inconclusive"
+    },
+    "recycle_vs_mlp": {
+      "effect": -0.0007588159127606443,
+      "std": 0.006859602269598299,
+      "pairs": 30,
+      "datasets": 6,
+      "ci95": [
+        -0.007957527009988481,
+        0.006439895184467192
+      ],
+      "verdict": "dead_end"
+    },
+    "pair_vs_mlp": {
+      "effect": 0.002949941768235799,
+      "std": 0.024807821807426238,
+      "pairs": 30,
+      "datasets": 6,
+      "ci95": [
+        -0.023084270584666108,
+        0.028984154121137706
+      ],
+      "verdict": "inconclusive"
+    },
+    "pair_recycle_vs_mlp": {
+      "effect": 0.00634148223937725,
+      "std": 0.02155772233989224,
+      "pairs": 30,
+      "datasets": 6,
+      "ci95": [
+        -0.01628195989908752,
+        0.028964924377842018
+      ],
+      "verdict": "inconclusive"
+    },
+    "recycle_vs_nystrom": {
+      "effect": 0.014654544401756646,
+      "std": 0.01508373275884325,
+      "pairs": 30,
+      "datasets": 6,
+      "ci95": [
+        -0.0011748623380400409,
+        0.030483951141553334
+      ],
+      "verdict": "inconclusive"
+    },
+    "pair_vs_nystrom": {
+      "effect": 0.018363302082753087,
+      "std": 0.02439994137086318,
+      "pairs": 30,
+      "datasets": 6,
+      "ci95": [
+        -0.007242866003203209,
+        0.04396947016870938
+      ],
+      "verdict": "inconclusive"
+    }
+  }
+}

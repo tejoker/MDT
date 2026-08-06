@@ -59,7 +59,8 @@ def _trajectory(n_views: int, t: int, method: str, seed: int) -> np.ndarray:
     raise ValueError(f"unknown discrete method: {method!r}")
 
 
-def _mdt_contrastive(P: list, t: int, steps: int = 80, lr: float = 0.05, seed: int = 0):
+def _mdt_contrastive(P: list, t: int, steps: int = 80, lr: float = 0.05, seed: int = 0,
+                     return_weights: bool = False):
     """Learn convex view-fusion weights by ADAM on a contrastive loss (MDT-Cst).
 
     Vendored from github.com/Gwendal-Debaussart/mixed-diffusion-trajectory
@@ -105,6 +106,10 @@ def _mdt_contrastive(P: list, t: int, steps: int = 80, lr: float = 0.05, seed: i
             best_loss, best = loss.item(), A.detach().clone()
 
     weights = torch.softmax(best, dim=1).cpu().numpy()
+    # The out-of-sample Nystrom rule in experiments/mvbench needs the weight
+    # trajectory, not just the operator, to build the test->train row.
+    if return_weights:
+        return weights
     return _mdt_operator(weights, P)
 
 

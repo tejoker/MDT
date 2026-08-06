@@ -1,0 +1,747 @@
+{
+  "baseline": "mdt_cvx_rand",
+  "methods": {
+    "ad": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5117693174869415,
+        "std": 0.25714868790343637
+      },
+      "test_ami": {
+        "mean": 0.460532076665417,
+        "std": 0.29009889434936104
+      },
+      "inductive_ami": {
+        "mean": 0.46453846805926297,
+        "std": 0.29545851642179616
+      },
+      "train_seconds": {
+        "mean": 0.2399885109666381,
+        "std": 0.2101094014689153
+      },
+      "prr_inductive": 0.7053105338882595
+    },
+    "com_diff": {
+      "encompassed_by_mdt": false,
+      "runs": 5,
+      "train_ami": {
+        "mean": 0.21694215965028288,
+        "std": 0.01937225959221383
+      },
+      "test_ami": {
+        "mean": 0.1978224486283035,
+        "std": 0.01978031226038813
+      },
+      "inductive_ami": {
+        "mean": 0.19042948381671354,
+        "std": 0.014101108720599302
+      },
+      "train_seconds": {
+        "mean": 0.6030204711994884,
+        "std": 0.36229246192643394
+      },
+      "prr_inductive": 0.9229692360305588
+    },
+    "cr_diff": {
+      "encompassed_by_mdt": false,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5210012880020558,
+        "std": 0.20043239898311926
+      },
+      "test_ami": {
+        "mean": 0.44315467939320236,
+        "std": 0.21244120829571297
+      },
+      "inductive_ami": {
+        "mean": 0.4820331508587426,
+        "std": 0.20330762655176954
+      },
+      "train_seconds": {
+        "mean": 1.5807862887000133,
+        "std": 1.0071882072325045
+      },
+      "prr_inductive": 0.8130132124623756
+    },
+    "dgcca": {
+      "encompassed_by_mdt": false,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.6032555301481782,
+        "std": 0.11984747293418876
+      },
+      "test_ami": {
+        "mean": 0.6288110001956632,
+        "std": 0.15241830984258287
+      },
+      "inductive_ami": {
+        "mean": 0.5915008080443286,
+        "std": 0.1586829408980614
+      },
+      "train_seconds": {
+        "mean": 3.4554708730334824,
+        "std": 1.4437401719829728
+      },
+      "prr_inductive": 1.1066334600570398
+    },
+    "features": {
+      "encompassed_by_mdt": null,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5689366698952576,
+        "std": 0.2593358283166315
+      },
+      "test_ami": {
+        "mean": 0.5672962342201279,
+        "std": 0.25894233477652184
+      },
+      "inductive_ami": {
+        "mean": 0.579612766070237,
+        "std": 0.26774063075895144
+      },
+      "train_seconds": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "prr_inductive": 0.9197263661006232
+    },
+    "gcca": {
+      "encompassed_by_mdt": false,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.598659902386764,
+        "std": 0.13295398718518064
+      },
+      "test_ami": {
+        "mean": 0.6143323915992795,
+        "std": 0.15644404203719933
+      },
+      "inductive_ami": {
+        "mean": 0.5928598368760365,
+        "std": 0.15205719137494766
+      },
+      "train_seconds": {
+        "mean": 0.3588712803331267,
+        "std": 0.5124996358209589
+      },
+      "prr_inductive": 1.1186503834202315
+    },
+    "id": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.4500037098933989,
+        "std": 0.2866614525269593
+      },
+      "test_ami": {
+        "mean": 0.43374487795350697,
+        "std": 0.2983507155338477
+      },
+      "inductive_ami": {
+        "mean": 0.4281987552700361,
+        "std": 0.3041190712455216
+      },
+      "train_seconds": {
+        "mean": 1.7648153424332123,
+        "std": 1.353066092535424
+      },
+      "prr_inductive": 0.6489165636587645
+    },
+    "mdt_cvx_rand": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.6020659190159621,
+        "std": 0.2100557201313601
+      },
+      "test_ami": {
+        "mean": 0.5982065027682741,
+        "std": 0.2016139737123058
+      },
+      "inductive_ami": {
+        "mean": 0.5899680552552987,
+        "std": 0.21637871256291602
+      },
+      "train_seconds": {
+        "mean": 0.2691826228001446,
+        "std": 0.17884232987257656
+      },
+      "prr_inductive": 1.0
+    },
+    "mdt_rand": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.536442321690353,
+        "std": 0.20903059804054322
+      },
+      "test_ami": {
+        "mean": 0.5107215168819453,
+        "std": 0.22297476463347793
+      },
+      "inductive_ami": {
+        "mean": 0.5103692310153222,
+        "std": 0.21983796498540492
+      },
+      "train_seconds": {
+        "mean": 0.27626051210014946,
+        "std": 0.2294485132114127
+      },
+      "prr_inductive": 0.9128871974728165
+    },
+    "mdt_selected": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5721926583929099,
+        "std": 0.11656125388653925
+      },
+      "test_ami": {
+        "mean": 0.5543461482124636,
+        "std": 0.11612637190449318
+      },
+      "inductive_ami": {
+        "mean": 0.5460868380103124,
+        "std": 0.12330440546349425
+      },
+      "train_seconds": {
+        "mean": 20.366508406700145,
+        "std": 11.402398359885462
+      },
+      "prr_inductive": 1.1026648231841942
+    },
+    "mvd": {
+      "encompassed_by_mdt": false,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5063932725863156,
+        "std": 0.2619583903845459
+      },
+      "test_ami": {
+        "mean": 0.45340961266991214,
+        "std": 0.2873909296868068
+      },
+      "inductive_ami": {
+        "mean": 0.46333442867973496,
+        "std": 0.2918730370442588
+      },
+      "train_seconds": {
+        "mean": 0.7462544648332672,
+        "std": 0.4945121985918484
+      },
+      "prr_inductive": 0.7070352901149106
+    },
+    "p_ad": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.5097885829132331,
+        "std": 0.2513497284123962
+      },
+      "test_ami": {
+        "mean": 0.4608281811960781,
+        "std": 0.2853991134990701
+      },
+      "inductive_ami": {
+        "mean": 0.45488474270373336,
+        "std": 0.29398783085286234
+      },
+      "train_seconds": {
+        "mean": 2.9291700941668144,
+        "std": 1.835364117018843
+      },
+      "prr_inductive": 0.6912614814759357
+    },
+    "specrage": {
+      "encompassed_by_mdt": false,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.6651530321744428,
+        "std": 0.1469763448624832
+      },
+      "test_ami": {
+        "mean": 0.6538522531197509,
+        "std": 0.15327316282517423
+      },
+      "inductive_ami": {
+        "mean": 0.650352755715778,
+        "std": 0.1566431754441018
+      },
+      "train_seconds": {
+        "mean": 58.9194287274667,
+        "std": 30.60955622842769
+      },
+      "prr_inductive": 1.256821268291406
+    },
+    "uniform_fused": {
+      "encompassed_by_mdt": true,
+      "runs": 30,
+      "train_ami": {
+        "mean": 0.6363779611119015,
+        "std": 0.18149498808685005
+      },
+      "test_ami": {
+        "mean": 0.6470685761724557,
+        "std": 0.17040310185158314
+      },
+      "inductive_ami": {
+        "mean": 0.6325698559133393,
+        "std": 0.18701406956510422
+      },
+      "train_seconds": {
+        "mean": 0.24095619823316763,
+        "std": 0.19304826148513596
+      },
+      "prr_inductive": 1.1658100214517413
+    }
+  },
+  "decisions": {
+    "mdt_cvx_rand_vs_ad": {
+      "inductive_ami": {
+        "effect": 0.12542958719603584,
+        "std": 0.14463833640582516,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.026359037923501916,
+          0.2772182123155736
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.13767442610285707,
+        "std": 0.14948134623659232,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.019196626137454348,
+          0.29454547834316847
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.0902966015290204,
+        "std": 0.09666139580494641,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.011143312230782548,
+          0.19173651528882335
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_com_diff": {
+      "inductive_ami": {
+        "effect": 0.048450950364315945,
+        "std": 0.0,
+        "pairs": 5,
+        "datasets": 1,
+        "ci95": null,
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.06544510745191649,
+        "std": 0.0,
+        "pairs": 5,
+        "datasets": 1,
+        "ci95": null,
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.045123422218704856,
+        "std": 0.0,
+        "pairs": 5,
+        "datasets": 1,
+        "ci95": null,
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_cr_diff": {
+      "inductive_ami": {
+        "effect": 0.10793490439655617,
+        "std": 0.0437915925319014,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.06197844646577602,
+          0.15389136232733633
+        ],
+        "verdict": "mdt_wins"
+      },
+      "test_ami": {
+        "effect": 0.15505182337507176,
+        "std": 0.05337097616828549,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.09904241884803375,
+          0.21106122790210977
+        ],
+        "verdict": "mdt_wins"
+      },
+      "train_ami": {
+        "effect": 0.08106463101390628,
+        "std": 0.06247410533610276,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.015502078303584146,
+          0.1466271837242284
+        ],
+        "verdict": "mdt_wins"
+      }
+    },
+    "mdt_cvx_rand_vs_dgcca": {
+      "inductive_ami": {
+        "effect": -0.0015327527890296084,
+        "std": 0.08367582931510688,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.08934515027015595,
+          0.08627964469209674
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": -0.03060449742738905,
+        "std": 0.056114776646126296,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.08949334396463682,
+          0.028284349109858727
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": -0.0011896111322161826,
+        "std": 0.130733920581829,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.1383864467341187,
+          0.13600722446968633
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_features": {
+      "inductive_ami": {
+        "effect": 0.010355289185061962,
+        "std": 0.09132912651932847,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.08548875114489082,
+          0.10619932951501473
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.030910268548146266,
+        "std": 0.09354999876767055,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.0672644342708726,
+          0.12908497136716512
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.033129249120704446,
+        "std": 0.09143317983563129,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.06282398846782589,
+          0.12908248670923478
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_gcca": {
+      "inductive_ami": {
+        "effect": -0.0028917816207376236,
+        "std": 0.0854639536750795,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.09258070053378543,
+          0.08679713729231019
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": -0.01612588883100538,
+        "std": 0.06695449204661476,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.08639031903585512,
+          0.05413854137384436
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.003406016629198009,
+        "std": 0.11143236775737576,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.11353508153338826,
+          0.12034711479178428
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_id": {
+      "inductive_ami": {
+        "effect": 0.16176929998526265,
+        "std": 0.172547054585506,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.019307728655845152,
+          0.34284632862637043
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.16446162481476714,
+        "std": 0.17141548716709848,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.015427896648518735,
+          0.344351146278053
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.15206220912256319,
+        "std": 0.1441384208658064,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.0007982131876589638,
+          0.30332620505746744
+        ],
+        "verdict": "mdt_wins"
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_rand": {
+      "inductive_ami": {
+        "effect": 0.0795988242399766,
+        "std": 0.0653188038391474,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.011050943535800689,
+          0.14814670494415252
+        ],
+        "verdict": "mdt_wins"
+      },
+      "test_ami": {
+        "effect": 0.08748498588632875,
+        "std": 0.0645284571749327,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.019766523139452624,
+          0.15520344863320487
+        ],
+        "verdict": "mdt_wins"
+      },
+      "train_ami": {
+        "effect": 0.0656235973256091,
+        "std": 0.05351717103682925,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          0.009460770693151363,
+          0.12178642395806684
+        ],
+        "verdict": "mdt_wins"
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_selected": {
+      "inductive_ami": {
+        "effect": 0.04388121724498639,
+        "std": 0.15418340386435755,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.11792434185074666,
+          0.20568677634071944
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.043860354555810464,
+        "std": 0.14440457902829595,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.10768295724065952,
+          0.19540366635228046
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.02987326062305212,
+        "std": 0.1548460735851966,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.1326277276952093,
+          0.19237424894131355
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_mvd": {
+      "inductive_ami": {
+        "effect": 0.12663362657556396,
+        "std": 0.14160174689995325,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.02196829329277769,
+          0.2752355464439056
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.14479689009836197,
+        "std": 0.1485531738004911,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.011100104907535768,
+          0.3006938851042597
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.0956726464296463,
+        "std": 0.10776483160565692,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.017419608584719262,
+          0.20876490144401189
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_p_ad": {
+      "inductive_ami": {
+        "effect": 0.13508331255156542,
+        "std": 0.14725277363802075,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.019448996177709427,
+          0.2896156212808403
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": 0.1373783215721961,
+        "std": 0.1450401228512637,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.014831952562811973,
+          0.2895885957072042
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": 0.09227733610272883,
+        "std": 0.09210502992391957,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.004380964913118485,
+          0.18893563711857614
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_specrage": {
+      "inductive_ami": {
+        "effect": -0.06038470046047928,
+        "std": 0.10049410194171915,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.16584679263745958,
+          0.04507739171650102
+        ],
+        "verdict": "inconclusive"
+      },
+      "test_ami": {
+        "effect": -0.055645750351476696,
+        "std": 0.09961352944559464,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.16018373836751176,
+          0.04889223766455838
+        ],
+        "verdict": "inconclusive"
+      },
+      "train_ami": {
+        "effect": -0.06308711315848091,
+        "std": 0.09673977582684674,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.1646092817067219,
+          0.03843505538976007
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "mdt_cvx_rand_vs_uniform_fused": {
+      "inductive_ami": {
+        "effect": -0.0426018006580404,
+        "std": 0.04181564305449815,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.08648462678459973,
+          0.0012810254685189301
+        ],
+        "verdict": "no_mdt_advantage"
+      },
+      "test_ami": {
+        "effect": -0.04886207340418144,
+        "std": 0.04628903666593559,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.09743943821786623,
+          -0.0002847085904966462
+        ],
+        "verdict": "no_mdt_advantage"
+      },
+      "train_ami": {
+        "effect": -0.03431204209593962,
+        "std": 0.03909397318314218,
+        "pairs": 30,
+        "datasets": 6,
+        "ci95": [
+          -0.07533865085946688,
+          0.006714566667587643
+        ],
+        "verdict": "no_mdt_advantage"
+      }
+    }
+  }
+}

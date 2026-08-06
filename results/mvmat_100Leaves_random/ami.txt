@@ -1,0 +1,3 @@
+deep_train: 0.8126
+deep_test_oos: 0.6842
+classical_train (reference): 0.8899

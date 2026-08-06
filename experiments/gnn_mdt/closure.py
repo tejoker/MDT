@@ -58,7 +58,15 @@ def seed_everything(seed: int) -> None:
 
 
 def load_split(path: str, name: str, split: float, seed: int,
-               cap_train: int | None, cap_test: int | None) -> Split:
+               cap_train: int | None, cap_test: int | None,
+               standardize: bool = True) -> Split:
+    """Load a .mat multi-view dataset and split it.
+
+    ``standardize=False`` returns raw views.  That is only correct together with
+    the reference kernel recipe: its bandwidth ``max_i min_j d`` is a *distance*
+    while the exponent divides ``d**2`` by it, so the kernel is not scale
+    invariant and the two choices are coupled (see ``build_graphs``).
+    """
     # expanduser: configs point at ~/.cache/... because /tmp is wiped on reboot,
     # and neither Path() nor scipy expand "~" on their own.
     mat = scipy.io.loadmat(str(Path(path).expanduser() / f"{name}.mat"))
@@ -74,6 +82,10 @@ def load_split(path: str, name: str, split: float, seed: int,
         te = te[:cap_test]
     train, test = [], []
     for view in raw:
+        if not standardize:
+            train.append(np.nan_to_num(view[tr]).astype(np.float32))
+            test.append(np.nan_to_num(view[te]).astype(np.float32))
+            continue
         scaler = StandardScaler().fit(np.nan_to_num(view[tr]))
         train.append(np.nan_to_num(scaler.transform(view[tr])).astype(np.float32))
         test.append(np.nan_to_num(scaler.transform(view[te])).astype(np.float32))
@@ -176,17 +188,66 @@ def knn_transitions(x_train: np.ndarray, x_test: np.ndarray, knn: int,
 
 
 def build_graphs(split: Split, knn: int, alpha: float = 0.0,
-                 normalize: bool = True) -> tuple[list[sp.csr_matrix], list[sp.csr_matrix]]:
+                 normalize: bool = True, recipe: str = "quantile"
+                 ) -> tuple[list[sp.csr_matrix], list[sp.csr_matrix]]:
+    """Per-view train and test->train transitions.
+
+    ``recipe="quantile"`` is what every prior MDT/GNN result in this repo used:
+    a median pairwise-distance bandwidth on <=200 points and ``exp(-d^2/2s^2)``,
+    which is dimensionless and therefore scale invariant.
+
+    ``recipe="reference"`` reproduces ``benchmarks/utilities.get_kernel_matrix``
+    from the MDT reference repo, which is what produced the published Tab. 4:
+    bandwidth ``max_i min_{j!=i} d``, kernel ``exp(-d^2/bandwidth)``, arithmetic
+    symmetrisation ``(K+K^T)/2``, and raw (unstandardised) views.  Two caveats.
+    (i) The exponent divides a squared distance by a distance, so the kernel is
+    not scale invariant -- it must be paired with ``standardize=False``.
+    (ii) Upstream computes the bandwidth from the *full* distance matrix; here it
+    comes from the training rows only, because reusing test distances to set a
+    kernel parameter would leak. That is a necessary departure, not a choice.
+    """
+    if recipe not in ("quantile", "reference"):
+        raise ValueError(f"unknown kernel recipe: {recipe!r}")
     train, test = [], []
     for xtr, xte in zip(split.train, split.test):
-        # Match the existing MDT experiments: a global median bandwidth,
-        # estimated on at most 200 points, followed by kNN sparsification.
-        distances = pdist(xtr[:200])
-        sigma = float(np.quantile(distances, .5)) if len(distances) else 1.0
-        p, b = knn_transitions(xtr, xte, knn, sigma, alpha, normalize)
+        if recipe == "reference":
+            p, b = reference_transitions(xtr, xte, knn, normalize)
+        else:
+            distances = pdist(xtr[:200])
+            sigma = float(np.quantile(distances, .5)) if len(distances) else 1.0
+            p, b = knn_transitions(xtr, xte, knn, sigma, alpha, normalize)
         train.append(p)
         test.append(b)
     return train, test
+
+
+def reference_transitions(x_train: np.ndarray, x_test: np.ndarray, knn: int,
+                          normalize: bool = True
+                          ) -> tuple[sp.csr_matrix, sp.csr_matrix]:
+    """The MDT reference repo's kernel, with a train-only bandwidth."""
+    n = len(x_train)
+    k = min(max(2, knn), n)
+    fit = NearestNeighbors(n_neighbors=k).fit(x_train)
+    d_train, i_train = fit.kneighbors(x_train)
+    # max_i min_{j != i} d : column 1 is the nearest non-self neighbour, since
+    # column 0 is the point itself at distance 0.
+    nearest = d_train[:, 1] if d_train.shape[1] > 1 else d_train[:, 0]
+    bandwidth = float(np.max(nearest)) if len(nearest) else 1.0
+    bandwidth = max(bandwidth, 1e-12)
+
+    rows = np.repeat(np.arange(n), k)
+    weights = np.exp(-(d_train.ravel() ** 2) / bandwidth).astype(np.float32)
+    graph = sp.csr_matrix((weights, (rows, i_train.ravel())), shape=(n, n))
+    graph = ((graph + graph.T) * 0.5).tocsr()          # upstream symmetrisation
+
+    d_test, i_test = fit.kneighbors(x_test, n_neighbors=k)
+    test_rows = np.repeat(np.arange(len(x_test)), k)
+    test_weights = np.exp(-(d_test.ravel() ** 2) / bandwidth).astype(np.float32)
+    bipartite = sp.csr_matrix((test_weights, (test_rows, i_test.ravel())),
+                              shape=(len(x_test), n))
+    if not normalize:
+        return graph, bipartite.tocsr()
+    return _row_normalize(graph), _row_normalize(bipartite)
 
 
 def shuffle_graphs(train: Sequence[sp.csr_matrix], test: Sequence[sp.csr_matrix],

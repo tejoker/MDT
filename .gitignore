@@ -108,3 +108,5 @@ experiments/run_experiments-sbatch.sh
 
 # LaTeX build artefacts (paper/); .log and .out are already covered above
 *.aux
+# mvbench run logs: 2 MB of per-cell stdout, reproducible from the JSONL
+results/**/logs/

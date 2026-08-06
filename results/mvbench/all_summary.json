@@ -1,0 +1,1666 @@
+{
+  "baseline": "mdt_cvx_rand",
+  "methods": {
+    "ad": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3687230471766656,
+        "std": 0.2952155052162481
+      },
+      "test_ami": {
+        "mean": 0.32106878220415996,
+        "std": 0.2809200514945904
+      },
+      "inductive_ami": {
+        "mean": 0.3199739504747188,
+        "std": 0.2928561117388122
+      },
+      "train_seconds": {
+        "mean": 0.11001587288368395,
+        "std": 0.05727392669093583
+      },
+      "prr_inductive": 0.8418783977533011,
+      "prr_paired_cells": 190
+    },
+    "com_diff": {
+      "encompassed_by_mdt": false,
+      "runs": 40,
+      "train_ami": {
+        "mean": 0.10284183431258787,
+        "std": 0.071767479915293
+      },
+      "test_ami": {
+        "mean": 0.09349305435776312,
+        "std": 0.07674268341257215
+      },
+      "inductive_ami": {
+        "mean": 0.0762992222384557,
+        "std": 0.0696587658335311
+      },
+      "train_seconds": {
+        "mean": 0.0897711562749464,
+        "std": 0.05167753585401369
+      },
+      "prr_inductive": 0.6911919593392383,
+      "prr_paired_cells": 40
+    },
+    "cr_diff": {
+      "encompassed_by_mdt": false,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3590320861729774,
+        "std": 0.28198198832610427
+      },
+      "test_ami": {
+        "mean": 0.28625281364064803,
+        "std": 0.2650030832704313
+      },
+      "inductive_ami": {
+        "mean": 0.31693857271875425,
+        "std": 0.2701671714904359
+      },
+      "train_seconds": {
+        "mean": 0.8402342348526681,
+        "std": 0.6067632991917022
+      },
+      "prr_inductive": 0.8338920633720923,
+      "prr_paired_cells": 190
+    },
+    "dgcca": {
+      "encompassed_by_mdt": false,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.4201811394617353,
+        "std": 0.2927012902925901
+      },
+      "test_ami": {
+        "mean": 0.4343457386687658,
+        "std": 0.27662966356770724
+      },
+      "inductive_ami": {
+        "mean": 0.381487380043546,
+        "std": 0.28235408763022846
+      },
+      "train_seconds": {
+        "mean": 2.9316460375319844,
+        "std": 1.3181110707445227
+      },
+      "prr_inductive": 1.0037254088893106,
+      "prr_paired_cells": 190
+    },
+    "features": {
+      "encompassed_by_mdt": null,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.37246226044744796,
+        "std": 0.32714408861479183
+      },
+      "test_ami": {
+        "mean": 0.3502378739108152,
+        "std": 0.3192729476137153
+      },
+      "inductive_ami": {
+        "mean": 0.35517406194323925,
+        "std": 0.32415540275312643
+      },
+      "train_seconds": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "prr_inductive": 0.9344928540235373,
+      "prr_paired_cells": 190
+    },
+    "features_matched": {
+      "encompassed_by_mdt": null,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.368206557607416,
+        "std": 0.2732355534358571
+      },
+      "test_ami": {
+        "mean": 0.38053807783017307,
+        "std": 0.24634339554236276
+      },
+      "inductive_ami": {
+        "mean": 0.34139937784070445,
+        "std": 0.2729273237758269
+      },
+      "train_seconds": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "prr_inductive": 0.8982505006550993,
+      "prr_paired_cells": 190
+    },
+    "gcca": {
+      "encompassed_by_mdt": false,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3768649923661527,
+        "std": 0.2756412860528116
+      },
+      "test_ami": {
+        "mean": 0.3841644303385303,
+        "std": 0.27331953729607933
+      },
+      "inductive_ami": {
+        "mean": 0.32278291262977454,
+        "std": 0.2838389054898482
+      },
+      "train_seconds": {
+        "mean": 0.24991875794755622,
+        "std": 0.4249794510102072
+      },
+      "prr_inductive": 0.8492690136298108,
+      "prr_paired_cells": 190
+    },
+    "id": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.34851025537171454,
+        "std": 0.2795017494453047
+      },
+      "test_ami": {
+        "mean": 0.32156331686108186,
+        "std": 0.2744905886675349
+      },
+      "inductive_ami": {
+        "mean": 0.30929726190450274,
+        "std": 0.28472456162726373
+      },
+      "train_seconds": {
+        "mean": 0.796584567420972,
+        "std": 0.5830564078462507
+      },
+      "prr_inductive": 0.8137871314065593,
+      "prr_paired_cells": 190
+    },
+    "mdt_bsc": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.4078672713092346,
+        "std": 0.30655867602125797
+      },
+      "test_ami": {
+        "mean": 0.38609516969966073,
+        "std": 0.2912361758294922
+      },
+      "inductive_ami": {
+        "mean": 0.3702134693209559,
+        "std": 0.30785755369385825
+      },
+      "train_seconds": {
+        "mean": 18.06473076247354,
+        "std": 11.83800770586536
+      },
+      "prr_inductive": 0.974062800788037,
+      "prr_paired_cells": 190
+    },
+    "mdt_cst": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3791912829829319,
+        "std": 0.2648665854769696
+      },
+      "test_ami": {
+        "mean": 0.36534683098126125,
+        "std": 0.25752444236580135
+      },
+      "inductive_ami": {
+        "mean": 0.3478092976857253,
+        "std": 0.26708267243824896
+      },
+      "train_seconds": {
+        "mean": 1.492952466126199,
+        "std": 0.8888065595561826
+      },
+      "prr_inductive": 0.9151155393273009,
+      "prr_paired_cells": 190
+    },
+    "mdt_cvx_rand": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.4201598158917537,
+        "std": 0.30677537179762904
+      },
+      "test_ami": {
+        "mean": 0.40274892253202127,
+        "std": 0.29007486201208915
+      },
+      "inductive_ami": {
+        "mean": 0.38007145845364954,
+        "std": 0.30727365131507695
+      },
+      "train_seconds": {
+        "mean": 0.12140781422605965,
+        "std": 0.06340017853785973
+      },
+      "prr_inductive": 1.0,
+      "prr_paired_cells": 190
+    },
+    "mdt_direct": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.44543293364139896,
+        "std": 0.3207995401268115
+      },
+      "test_ami": {
+        "mean": 0.4359145878266875,
+        "std": 0.3121041677515871
+      },
+      "inductive_ami": {
+        "mean": 0.41715818428475715,
+        "std": 0.3222789608782828
+      },
+      "train_seconds": {
+        "mean": 21.58570463513158,
+        "std": 10.423226970565059
+      },
+      "prr_inductive": 1.0975782974654236,
+      "prr_paired_cells": 190
+    },
+    "mdt_rand": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3781334129398138,
+        "std": 0.2760487097665405
+      },
+      "test_ami": {
+        "mean": 0.3366465364280392,
+        "std": 0.26680068482784824
+      },
+      "inductive_ami": {
+        "mean": 0.33317448718075426,
+        "std": 0.27459713115664075
+      },
+      "train_seconds": {
+        "mean": 0.1054543227737189,
+        "std": 0.05590853751575652
+      },
+      "prr_inductive": 0.876610120992249,
+      "prr_paired_cells": 190
+    },
+    "mdt_selected": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3761895302918074,
+        "std": 0.286055796033712
+      },
+      "test_ami": {
+        "mean": 0.34651481953810653,
+        "std": 0.27801133021548674
+      },
+      "inductive_ami": {
+        "mean": 0.3377611833955993,
+        "std": 0.2848017936357472
+      },
+      "train_seconds": {
+        "mean": 11.003899885562886,
+        "std": 4.468884020205384
+      },
+      "prr_inductive": 0.8886781048222013,
+      "prr_paired_cells": 190
+    },
+    "mvd": {
+      "encompassed_by_mdt": false,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3722363219735829,
+        "std": 0.2925990289675382
+      },
+      "test_ami": {
+        "mean": 0.3296306952652231,
+        "std": 0.28077211575284805
+      },
+      "inductive_ami": {
+        "mean": 0.3202599081886308,
+        "std": 0.2922360088967659
+      },
+      "train_seconds": {
+        "mean": 1.347578337073604,
+        "std": 2.630598076872977
+      },
+      "prr_inductive": 0.842630776569315,
+      "prr_paired_cells": 190
+    },
+    "p_ad": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.3777889511861393,
+        "std": 0.28469455450991943
+      },
+      "test_ami": {
+        "mean": 0.32283425793987147,
+        "std": 0.2760271179316365
+      },
+      "inductive_ami": {
+        "mean": 0.3216368474218217,
+        "std": 0.28830898312609055
+      },
+      "train_seconds": {
+        "mean": 1.4064699243260914,
+        "std": 0.863676571621519
+      },
+      "prr_inductive": 0.8462536195967632,
+      "prr_paired_cells": 190
+    },
+    "specrage": {
+      "encompassed_by_mdt": false,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.4440729992141531,
+        "std": 0.28163651239229426
+      },
+      "test_ami": {
+        "mean": 0.4359916830134463,
+        "std": 0.26517477193740335
+      },
+      "inductive_ami": {
+        "mean": 0.4170777698929549,
+        "std": 0.27350396752508416
+      },
+      "train_seconds": {
+        "mean": 47.40375496926323,
+        "std": 34.27081785259275
+      },
+      "prr_inductive": 1.0973667204316484,
+      "prr_paired_cells": 190
+    },
+    "uniform_fused": {
+      "encompassed_by_mdt": true,
+      "runs": 190,
+      "train_ami": {
+        "mean": 0.44584848516597836,
+        "std": 0.3166556340631097
+      },
+      "test_ami": {
+        "mean": 0.44136756195102994,
+        "std": 0.30438078021411874
+      },
+      "inductive_ami": {
+        "mean": 0.4133111445336101,
+        "std": 0.3209517991636025
+      },
+      "train_seconds": {
+        "mean": 0.11014439996835886,
+        "std": 0.05921659430441013
+      },
+      "prr_inductive": 1.0874564120526147,
+      "prr_paired_cells": 190
+    }
+  },
+  "decisions": {
+    "mdt_cvx_rand_vs_ad": {
+      "inductive_ami": {
+        "effect": 0.060097507978930785,
+        "std": 0.09167319465646172,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.01591244251911645,
+          0.10428257343874511
+        ],
+        "ci95_bootstrap": [
+          0.023716521712713982,
+          0.10420931212878701
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.01046082012639296,
+        "verdict": "mdt_wins",
+        "p_holm": 0.14354035349623087,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.08168014032786135,
+        "std": 0.09146396672756141,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.03759591950173874,
+          0.12576436115398396
+        ],
+        "ci95_bootstrap": [
+          0.044410734642164544,
+          0.12480285249162944
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.0010667916539633987,
+        "verdict": "mdt_wins",
+        "p_holm": 0.01600187480945098,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.05143676871508812,
+        "std": 0.06158964671853196,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.021751509222352028,
+          0.08112202820782421
+        ],
+        "ci95_bootstrap": [
+          0.026214470306076938,
+          0.08003219278095443
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 0.0018714160067247055,
+        "verdict": "mdt_wins",
+        "p_holm": 0.02994265610759529,
+        "significant_holm_05": true
+      }
+    },
+    "mdt_cvx_rand_vs_com_diff": {
+      "inductive_ami": {
+        "effect": 0.034088668140645054,
+        "std": 0.01751146357423629,
+        "pairs": 40,
+        "datasets": 4,
+        "ci95": [
+          0.006224021864670939,
+          0.061953314416619165
+        ],
+        "ci95_bootstrap": [
+          0.016750172804645542,
+          0.04545028597315573
+        ],
+        "sign_test": {
+          "wins": 4,
+          "losses": 0,
+          "ties": 0,
+          "p_sign": 0.125
+        },
+        "p_raw": 0.030055087184160133,
+        "verdict": "inconclusive",
+        "p_holm": 0.30055087184160134,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.04509131781814295,
+        "std": 0.03091153611644482,
+        "pairs": 40,
+        "datasets": 4,
+        "ci95": [
+          -0.004095834134077485,
+          0.09427846977036339
+        ],
+        "ci95_bootstrap": [
+          0.020101510608128325,
+          0.06921592783614706
+        ],
+        "sign_test": {
+          "wins": 4,
+          "losses": 0,
+          "ties": 0,
+          "p_sign": 0.125
+        },
+        "p_raw": 0.06162363784640171,
+        "verdict": "inconclusive",
+        "p_holm": 0.49298910277121366,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.039332409350590555,
+        "std": 0.02587019901687184,
+        "pairs": 40,
+        "datasets": 4,
+        "ci95": [
+          -0.001832850288515625,
+          0.08049766898969674
+        ],
+        "ci95_bootstrap": [
+          0.017563648991692913,
+          0.0611011697094882
+        ],
+        "sign_test": {
+          "wins": 4,
+          "losses": 0,
+          "ties": 0,
+          "p_sign": 0.125
+        },
+        "p_raw": 0.05583419557487041,
+        "verdict": "inconclusive",
+        "p_holm": 0.4466735645989633,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_cr_diff": {
+      "inductive_ami": {
+        "effect": 0.06313288573489538,
+        "std": 0.0644215471728412,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.03208269391468627,
+          0.0941830775551045
+        ],
+        "ci95_bootstrap": [
+          0.03574611019406611,
+          0.09151956888454733
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.0004590149772830808,
+        "verdict": "mdt_wins",
+        "p_holm": 0.007803254613812373,
+        "significant_holm_05": true
+      },
+      "test_ami": {
+        "effect": 0.1164961088913733,
+        "std": 0.08063877802561462,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.0776294620049699,
+          0.1553627557777767
+        ],
+        "ci95_bootstrap": [
+          0.08199225369121677,
+          0.15261374301981945
+        ],
+        "sign_test": {
+          "wins": 18,
+          "losses": 1,
+          "ties": 0,
+          "p_sign": 7.62939453125e-05
+        },
+        "p_raw": 6.1677200745666405e-06,
+        "verdict": "mdt_wins",
+        "p_holm": 0.00010485124126763288,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.061127729718776294,
+        "std": 0.053436652672066244,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.035372087569327276,
+          0.08688337186822531
+        ],
+        "ci95_bootstrap": [
+          0.03803645601137057,
+          0.08454985732329123
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 9.564242984392799e-05,
+        "verdict": "mdt_wins",
+        "p_holm": 0.0016259213073467759,
+        "significant_holm_05": true
+      }
+    },
+    "mdt_cvx_rand_vs_dgcca": {
+      "inductive_ami": {
+        "effect": -0.0014159215898963283,
+        "std": 0.06628212200474057,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.033362881773512335,
+          0.03053103859371968
+        ],
+        "ci95_bootstrap": [
+          -0.03223137437750964,
+          0.02618133823680451
+        ],
+        "sign_test": {
+          "wins": 10,
+          "losses": 9,
+          "ties": 0,
+          "p_sign": 1.0
+        },
+        "p_raw": 0.926840802169198,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": -0.031596816136744456,
+        "std": 0.07898937079696865,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.06966847418654493,
+          0.006474841913056022
+        ],
+        "ci95_bootstrap": [
+          -0.0683492177772003,
+          0.0013534808213454292
+        ],
+        "sign_test": {
+          "wins": 5,
+          "losses": 14,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.09828004128983285,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.605435797934196,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": -2.132356998151958e-05,
+        "std": 0.09826829032967553,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.04738512339295083,
+          0.0473424762529878
+        ],
+        "ci95_bootstrap": [
+          -0.046697979701396636,
+          0.03846991321051449
+        ],
+        "sign_test": {
+          "wins": 11,
+          "losses": 8,
+          "ties": 0,
+          "p_sign": 0.6476058959960938
+        },
+        "p_raw": 0.9992557231125174,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_features": {
+      "inductive_ami": {
+        "effect": 0.02489739651041046,
+        "std": 0.10150334963895481,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.024025651988058262,
+          0.07382044500887919
+        ],
+        "ci95_bootstrap": [
+          -0.018195493378825176,
+          0.07106070667188032
+        ],
+        "sign_test": {
+          "wins": 11,
+          "losses": 8,
+          "ties": 0,
+          "p_sign": 0.6476058959960938
+        },
+        "p_raw": 0.299118158030758,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.05251104862120612,
+        "std": 0.09154838523853273,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.008386139375232256,
+          0.09663595786717999
+        ],
+        "ci95_bootstrap": [
+          0.01325091864085089,
+          0.09288712936375013
+        ],
+        "sign_test": {
+          "wins": 14,
+          "losses": 5,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.02229820040496105,
+        "verdict": "mdt_wins",
+        "p_holm": 0.22298200404961052,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.047697555444305796,
+        "std": 0.08905991916949142,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.004772048450725971,
+          0.09062306243788562
+        ],
+        "ci95_bootstrap": [
+          0.010959689401538958,
+          0.08877780658842639
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.031355783393819496,
+        "verdict": "mdt_wins",
+        "p_holm": 0.28220205054437547,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_features_matched": {
+      "inductive_ami": {
+        "effect": 0.03867208061294512,
+        "std": 0.07619515013565906,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.00194719381172824,
+          0.075396967414162
+        ],
+        "ci95_bootstrap": [
+          0.0056272289386106525,
+          0.07227534439095025
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.040111026090878896,
+        "verdict": "mdt_wins",
+        "p_holm": 0.3609992348179101,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.0222108447018483,
+        "std": 0.11294233490330587,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.03222561820956056,
+          0.07664730761325715
+        ],
+        "ci95_bootstrap": [
+          -0.031278732176505314,
+          0.06710241061688083
+        ],
+        "sign_test": {
+          "wins": 12,
+          "losses": 7,
+          "ties": 0,
+          "p_sign": 0.359283447265625
+        },
+        "p_raw": 0.40260026978136365,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.05195325828433776,
+        "std": 0.07579514883403177,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.015421165939151833,
+          0.08848535062952367
+        ],
+        "ci95_bootstrap": [
+          0.018999699525781462,
+          0.08517278580083927
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.007892347542445577,
+        "verdict": "mdt_wins",
+        "p_holm": 0.09963324464356013,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_gcca": {
+      "inductive_ami": {
+        "effect": 0.05728854582387511,
+        "std": 0.1538894769651056,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.016883807815166525,
+          0.13146089946291675
+        ],
+        "ci95_bootstrap": [
+          -0.005485148010018818,
+          0.12890728757081965
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.12203917504399055,
+        "verdict": "inconclusive",
+        "p_holm": 0.7322350502639433,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.018584492193490967,
+        "std": 0.09456235902379832,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.02699310591638885,
+          0.06416209030337078
+        ],
+        "ci95_bootstrap": [
+          -0.02189681982530287,
+          0.060780533864656185
+        ],
+        "sign_test": {
+          "wins": 10,
+          "losses": 9,
+          "ties": 0,
+          "p_sign": 1.0
+        },
+        "p_raw": 0.40289327206437087,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.043294823525601045,
+        "std": 0.11966706265551995,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.014382854411034006,
+          0.1009725014622361
+        ],
+        "ci95_bootstrap": [
+          -0.009431780409556098,
+          0.09446518197694216
+        ],
+        "sign_test": {
+          "wins": 14,
+          "losses": 5,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.13220239414207374,
+        "verdict": "inconclusive",
+        "p_holm": 0.7932143648524425,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_id": {
+      "inductive_ami": {
+        "effect": 0.07077419654914685,
+        "std": 0.11541208405323707,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.015147352651584164,
+          0.12640104044670952
+        ],
+        "ci95_bootstrap": [
+          0.025506654176748442,
+          0.12650706564861045
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.015514894679127318,
+        "verdict": "mdt_wins",
+        "p_holm": 0.18504641226400692,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.08118560567093935,
+        "std": 0.10736494714159166,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.02943735761087951,
+          0.1329338537309992
+        ],
+        "ci95_bootstrap": [
+          0.038288964911615514,
+          0.13291658596646086
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.004016201091368822,
+        "verdict": "mdt_wins",
+        "p_holm": 0.04819441309642586,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.07164956052003923,
+        "std": 0.10289309236889319,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.022056677467154236,
+          0.12124244357292424
+        ],
+        "ci95_bootstrap": [
+          0.030103378927048407,
+          0.12045909008725042
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.007116660331682866,
+        "verdict": "mdt_wins",
+        "p_holm": 0.09963324464356013,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_bsc": {
+      "inductive_ami": {
+        "effect": 0.009857989132693718,
+        "std": 0.08549804523720464,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.031350749579302006,
+          0.05106672784468945
+        ],
+        "ci95_bootstrap": [
+          -0.03148166158588158,
+          0.04242869042015311
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.6213498344555213,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.016653752832360667,
+        "std": 0.0905302157370173,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.026980414422541163,
+          0.0602879200872625
+        ],
+        "ci95_bootstrap": [
+          -0.026604868626864096,
+          0.05181536408399954
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.43309642275863613,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.012292544582519082,
+        "std": 0.08836905581246701,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.030299976931845093,
+          0.05488506609688326
+        ],
+        "ci95_bootstrap": [
+          -0.03017387776982355,
+          0.046640969483627046
+        ],
+        "sign_test": {
+          "wins": 13,
+          "losses": 6,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.5518580438427362,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_cst": {
+      "inductive_ami": {
+        "effect": 0.03226216076792426,
+        "std": 0.1251033319853248,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.028035715113101697,
+          0.09256003664895021
+        ],
+        "ci95_bootstrap": [
+          -0.02550559270456931,
+          0.08339096055604803
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.27574262689322915,
+        "verdict": "inconclusive",
+        "p_holm": 1.0,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.037402091550760026,
+        "std": 0.1259752175638798,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.023316019727388157,
+          0.09812020282890821
+        ],
+        "ci95_bootstrap": [
+          -0.02114800160337684,
+          0.0885448512042383
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.211969206488937,
+        "verdict": "inconclusive",
+        "p_holm": 0.847876825955748,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.04096853290882186,
+        "std": 0.11611344648712892,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.014996356861023317,
+          0.09693342267866703
+        ],
+        "ci95_bootstrap": [
+          -0.012802065656863357,
+          0.08832901379783738
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.14145204594547134,
+        "verdict": "inconclusive",
+        "p_holm": 0.7932143648524425,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_direct": {
+      "inductive_ami": {
+        "effect": -0.037086725831107524,
+        "std": 0.07952485891606209,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.07541648089262187,
+          0.0012430292304068183
+        ],
+        "ci95_bootstrap": [
+          -0.07582570270649931,
+          -0.007885623888293466
+        ],
+        "sign_test": {
+          "wins": 5,
+          "losses": 14,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.05709381029724574,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.4567504823779659,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": -0.03316566529466625,
+        "std": 0.07972400244257231,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.07159140446350581,
+          0.005260073874173328
+        ],
+        "ci95_bootstrap": [
+          -0.07153116803405905,
+          -0.0027579717660784174
+        ],
+        "sign_test": {
+          "wins": 7,
+          "losses": 12,
+          "ties": 0,
+          "p_sign": 0.359283447265625
+        },
+        "p_raw": 0.08649082827631371,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.605435797934196,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": -0.02527311774964518,
+        "std": 0.07599076360756092,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.06189949339766222,
+          0.011353257898371865
+        ],
+        "ci95_bootstrap": [
+          -0.062347798555872504,
+          0.0022022868057539036
+        ],
+        "sign_test": {
+          "wins": 8,
+          "losses": 11,
+          "ties": 0,
+          "p_sign": 0.6476058959960938
+        },
+        "p_raw": 0.1643458557414127,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.7932143648524425,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_rand": {
+      "inductive_ami": {
+        "effect": 0.04689697127289534,
+        "std": 0.05900202716784932,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.018458904480931446,
+          0.07533503806485924
+        ],
+        "ci95_bootstrap": [
+          0.02224114310366175,
+          0.07312958457383693
+        ],
+        "sign_test": {
+          "wins": 14,
+          "losses": 5,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.002765633133920688,
+        "verdict": "mdt_wins",
+        "p_holm": 0.044250130142731006,
+        "significant_holm_05": true
+      },
+      "test_ami": {
+        "effect": 0.06610238610398204,
+        "std": 0.05689875490121277,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.038678064094551455,
+          0.09352670811341263
+        ],
+        "ci95_bootstrap": [
+          0.041888121290699694,
+          0.09136598222767879
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 8.08540858389609e-05,
+        "verdict": "mdt_wins",
+        "p_holm": 0.0012936653734233743,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.04202640295193991,
+        "std": 0.05252461800796407,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.016710347439413385,
+          0.06734245846446645
+        ],
+        "ci95_bootstrap": [
+          0.020036870466298616,
+          0.06526175648426578
+        ],
+        "sign_test": {
+          "wins": 14,
+          "losses": 5,
+          "ties": 0,
+          "p_sign": 0.063568115234375
+        },
+        "p_raw": 0.0026276459244378167,
+        "verdict": "mdt_wins",
+        "p_holm": 0.03941468886656725,
+        "significant_holm_05": true
+      }
+    },
+    "mdt_cvx_rand_vs_mdt_selected": {
+      "inductive_ami": {
+        "effect": 0.04231027505805039,
+        "std": 0.09894197637336025,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.0053782310441221545,
+          0.08999878116022295
+        ],
+        "ci95_bootstrap": [
+          -0.00462784370715279,
+          0.08139907671856327
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.07871903814212154,
+        "verdict": "inconclusive",
+        "p_holm": 0.5510332669948508,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.056234102993914827,
+        "std": 0.10404973511607203,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.0060837359819594095,
+          0.10638447000587024
+        ],
+        "ci95_bootstrap": [
+          0.006891206182835427,
+          0.09755101254474767
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.030024206216012372,
+        "verdict": "mdt_wins",
+        "p_holm": 0.27021785594411135,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": 0.04397028559994636,
+        "std": 0.10070062437040463,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.004565861703794145,
+          0.09250643290368687
+        ],
+        "ci95_bootstrap": [
+          -0.00330573046295298,
+          0.08453530193235392
+        ],
+        "sign_test": {
+          "wins": 15,
+          "losses": 4,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.07312026232954331,
+        "verdict": "inconclusive",
+        "p_holm": 0.5118418363068032,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_mvd": {
+      "inductive_ami": {
+        "effect": 0.059811550265018776,
+        "std": 0.08993686636727552,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.016463368251940655,
+          0.1031597322780969
+        ],
+        "ci95_bootstrap": [
+          0.023959303902964864,
+          0.10300076205334167
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 0.009569356899748725,
+        "verdict": "mdt_wins",
+        "p_holm": 0.14354035349623087,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.07311822726679826,
+        "std": 0.09006617743646307,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.029707719313426008,
+          0.11652873522017052
+        ],
+        "ci95_bootstrap": [
+          0.038304818165859296,
+          0.11681030159542397
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 0.0023462528492607633,
+        "verdict": "mdt_wins",
+        "p_holm": 0.030501287040389923,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.04792349391817072,
+        "std": 0.06903394102944681,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.014650199420627348,
+          0.0811967884157141
+        ],
+        "ci95_bootstrap": [
+          0.019602942219493897,
+          0.07996747760884977
+        ],
+        "sign_test": {
+          "wins": 17,
+          "losses": 2,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 0.007263301623363418,
+        "verdict": "mdt_wins",
+        "p_holm": 0.09963324464356013,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_p_ad": {
+      "inductive_ami": {
+        "effect": 0.05843461103182799,
+        "std": 0.09518727135445477,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.012555814819927479,
+          0.1043134072437285
+        ],
+        "ci95_bootstrap": [
+          0.019296847998453666,
+          0.10353019346104213
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.015420534355333911,
+        "verdict": "mdt_wins",
+        "p_holm": 0.18504641226400692,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": 0.07991466459214985,
+        "std": 0.09301486145289593,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.03508293643613672,
+          0.12474639274816299
+        ],
+        "ci95_bootstrap": [
+          0.04204514556056427,
+          0.12415732133485365
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.0014823901443514272,
+        "verdict": "mdt_wins",
+        "p_holm": 0.02075346202091998,
+        "significant_holm_05": true
+      },
+      "train_ami": {
+        "effect": 0.04237086470561438,
+        "std": 0.06969934724096052,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          0.0087768546802302,
+          0.07596487473099856
+        ],
+        "ci95_bootstrap": [
+          0.012533333054779591,
+          0.0740587830886044
+        ],
+        "sign_test": {
+          "wins": 16,
+          "losses": 3,
+          "ties": 0,
+          "p_sign": 0.004425048828125
+        },
+        "p_raw": 0.01629528041864197,
+        "verdict": "mdt_wins",
+        "p_holm": 0.16295280418641972,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_specrage": {
+      "inductive_ami": {
+        "effect": -0.03700631143930522,
+        "std": 0.1023777557943172,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.08635081021402902,
+          0.012338187335418582
+        ],
+        "ci95_bootstrap": [
+          -0.08234980532566173,
+          0.00654847784489606
+        ],
+        "sign_test": {
+          "wins": 6,
+          "losses": 13,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.13252943789443491,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.7322350502639433,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": -0.033242760481424924,
+        "std": 0.09816418401634357,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.08055638266755513,
+          0.014070861704705284
+        ],
+        "ci95_bootstrap": [
+          -0.07713952558497929,
+          0.008480767611753915
+        ],
+        "sign_test": {
+          "wins": 6,
+          "losses": 13,
+          "ties": 0,
+          "p_sign": 0.1670684814453125
+        },
+        "p_raw": 0.15719265352061337,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.7859632676030669,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": -0.023913183322399337,
+        "std": 0.09114942453775163,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.06784579966589536,
+          0.020019433021096687
+        ],
+        "ci95_bootstrap": [
+          -0.06613373064102535,
+          0.013152813724103533
+        ],
+        "sign_test": {
+          "wins": 9,
+          "losses": 10,
+          "ties": 0,
+          "p_sign": 1.0
+        },
+        "p_raw": 0.2677861379300634,
+        "verdict": "inconclusive",
+        "p_holm": 0.8033584137901901,
+        "significant_holm_05": false
+      }
+    },
+    "mdt_cvx_rand_vs_uniform_fused": {
+      "inductive_ami": {
+        "effect": -0.03323968607996053,
+        "std": 0.05047602392075719,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.05756835084884568,
+          -0.008911021311075379
+        ],
+        "ci95_bootstrap": [
+          -0.057378361587277334,
+          -0.013659459957694344
+        ],
+        "sign_test": {
+          "wins": 4,
+          "losses": 15,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.010173942268355022,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.14354035349623087,
+        "significant_holm_05": false
+      },
+      "test_ami": {
+        "effect": -0.03861863941900854,
+        "std": 0.0551463293826731,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.06519831936550796,
+          -0.012038959472509117
+        ],
+        "ci95_bootstrap": [
+          -0.06451741818469313,
+          -0.01679853326240475
+        ],
+        "sign_test": {
+          "wins": 2,
+          "losses": 17,
+          "ties": 0,
+          "p_sign": 0.000728607177734375
+        },
+        "p_raw": 0.006854805139541982,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.0754028565349618,
+        "significant_holm_05": false
+      },
+      "train_ami": {
+        "effect": -0.025688669274224574,
+        "std": 0.038356580355922404,
+        "pairs": 190,
+        "datasets": 19,
+        "ci95": [
+          -0.04417594922767387,
+          -0.007201389320775273
+        ],
+        "ci95_bootstrap": [
+          -0.04372524286842824,
+          -0.010674324768834651
+        ],
+        "sign_test": {
+          "wins": 4,
+          "losses": 15,
+          "ties": 0,
+          "p_sign": 0.0192108154296875
+        },
+        "p_raw": 0.009155446767016769,
+        "verdict": "no_mdt_advantage",
+        "p_holm": 0.10070991443718445,
+        "significant_holm_05": false
+      }
+    }
+  },
+  "family_size": {
+    "inductive_ami": 17,
+    "test_ami": 17,
+    "train_ami": 17
+  }
+}

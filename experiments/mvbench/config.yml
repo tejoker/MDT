@@ -1,0 +1,33 @@
+data:
+  # NOT /tmp: it is wiped on reboot, which silently killed three runs mid-suite
+  # (FileNotFoundError on the first dataset, empty output, exit 1).
+  path: ~/.cache/multi-view-datasets
+  # Every dataset in ChuanbinZhang/Multi-view-datasets that (a) loads, (b) has
+  # >= 2 non-adjacency views, (c) keeps every class present in both halves of a
+  # 0.7 split. Deliberately excluded:
+  #   ACM, Cora, CiteSeer  -- carry n x n adjacency views; graph lane, see
+  #                           experiments/graph_mdt/
+  #   Wikipedia-test       -- a subset of Wikipedia, so not an independent
+  #                           cluster for the dataset-clustered interval
+  #   BBC4view, Reuters-1500 -- unreadable .mat layout in this release
+  # 19 datasets is what makes the intervals mean something: the half-width
+  # factor t(.975, k-1)/sqrt(k) is 1.05 at k=6 and 0.48 at k=19, so this is a
+  # 2.2x tighter interval at equal variance. Seeds cannot buy that -- the
+  # interval clusters by dataset (see closure.paired_effect).
+  datasets: [100Leaves, 3Sources, ALOI, BBCSport, Caltech101-7, Handwritten,
+             MNIST-10k, MNIST-4, MSRC-v5, Movies, NUS-WIDE, OutdoorScene,
+             Prokaryotic, ProteinFold, Reuters-1200, UCI, WebKB, Wikipedia, Yale]
+  split: 0.7
+  cap_train: 800      # MVD builds a dense (V*n)^2 operator; 800 keeps it under 6k
+  cap_test: 400
+
+mdt:
+  steps: 4
+  knn: auto           # floor(log n), same as the gnn_mdt run
+
+evaluation:
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  baseline: mdt_cvx_rand
+  min_effect: 0.02
+  skip: []            # e.g. [mvd] if RAM is tight
+  output: results/mvbench/metrics.jsonl

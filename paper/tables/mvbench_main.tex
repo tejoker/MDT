@@ -1,35 +1,35 @@
 \begin{table}[H]\centering\footnotesize
-\caption{\textbf{Out-of-sample multi-view clustering.} Inductive AMI (mean$\pm$std over the 19 dataset means, 10 seeds each) on held-out points that were never in the operator. $^{*}$ marks methods the MDT operator space contains (Sec.~3.5): a win over those concerns trajectory choice, not the framework. $^{\S}$ marks methods that are inductive by construction and therefore do not use the shared Nystr\"om rule. PRR is Eq.~\ref{eq:prr} against MDT-\textsc{Rand}, as a ratio of means. \emph{MDT W--L} is the number of datasets on which MDT-\textsc{Cvx-Rand} -- the strongest MDT variant out of sample -- beats and loses to that row, by exact sign test; $p_{\text{H}}$ is Holm-corrected over the 17-comparison family.}
+\caption{\textbf{Out-of-sample multi-view clustering.} Inductive AMI (mean$\pm$std over the 19 dataset means, 10 seeds each) on held-out points that were never in the operator. $^{*}$ marks methods the MDT operator space contains (Sec.~3.5): a win over those concerns trajectory choice, not the framework. $^{\S}$ marks methods that are inductive by construction and therefore do not use the shared Nystr\"om rule. PRR is Eq.~\ref{eq:prr} against MDT-\textsc{Rand}, as a ratio of means. \emph{MDT W--L} is the number of datasets on which MDT-\textsc{Direct} -- the paper's headline variant, and the strongest MDT variant out of sample -- beats and loses to that row, by exact sign test; $p_{\text{H}}$ is Holm-corrected over the 17-comparison family. $^\ddagger$ silhouette-ranked pool, ours, not a variant of the paper. $^\dagger$ per-cell max over the six MDT variants; it uses test labels, so it is an upper bound rather than a method. $^\P$ the oracle contains the baseline and so cannot lose to it; its sign test is degenerate by construction. MDT-\textsc{Cst} is included for completeness although Tab.~2 scopes it to manifold learning rather than clustering. SpecRaGE diverged to a \texttt{nan} loss on 3 of 190 fits (BBCSport, high-dimensional sparse text) and was refit from a new initialisation; no MDT variant required this.}
 \label{tab:oos-multiview}
 \begin{tabular}{l c c c c c c}
 \toprule
 Method & Ind.\ AMI & Test AMI & PRR & MDT W--L & $p_{\text{H}}$ & Time (s)\\
 \midrule
 \multicolumn{7}{l}{\emph{MDT variants (Tab.~2)}}\\
-MDT-\textsc{Cvx-Rand}$^{*}$ & 0.380$\pm$0.308 & 0.403 & 1.14 & -- & -- & 0.1\\
-MDT-\textsc{Direct}$^{*}$ & 0.361$\pm$0.275 & 0.383 & 1.08 & 13--6 & 0.668 & 21.9\\
-MDT-\textsc{Cst}$^{*}$ & 0.348$\pm$0.269 & 0.365 & 1.04 & 16--3 & 0.066 & 1.5\\
-MDT-\textsc{Bsc}$^{*}$ & 0.333$\pm$0.261 & 0.351 & 1.00 & 15--4 & 0.211 & 17.1\\
-MDT-\textsc{Rand}$^{*}$ & 0.333$\pm$0.269 & 0.337 & 1.00 & 14--5 & 0.381 & 0.1\\
-MDT-\textsc{Sil}~$^\ddagger$$^{*}$ & 0.338$\pm$0.287 & 0.347 & 1.01 & 16--3 & 0.066 & 11.0\\
-\emph{MDT best-of-6}~$^\dagger$$^{*}$ & 0.442$\pm$0.297 & 0.442 & 1.33 & 0--19 & \textbf{0.000} & --\\
+MDT-\textsc{Cvx-Rand}$^{*}$ & 0.380$\pm$0.308 & 0.403 & 1.14 & 14--5 & 0.381 & 0.1\\
+MDT-\textsc{Direct}$^{*}$ & \textbf{0.417$\pm$0.329} & 0.436 & 1.25 & -- & -- & 21.6\\
+MDT-\textsc{Cst}$^{*}$ & 0.348$\pm$0.269 & 0.365 & 1.04 & 17--2 & \textbf{0.009} & 1.5\\
+MDT-\textsc{Bsc}$^{*}$ & 0.370$\pm$0.313 & 0.386 & 1.11 & 18--1 & \textbf{0.001} & 18.1\\
+MDT-\textsc{Rand}$^{*}$ & 0.333$\pm$0.269 & 0.337 & 1.00 & 16--3 & \textbf{0.044} & 0.1\\
+MDT-\textsc{Sil}~$^\ddagger$$^{*}$ & 0.338$\pm$0.287 & 0.347 & 1.01 & 18--1 & \textbf{0.001} & 11.0\\
+\emph{MDT best-of-6}~$^\dagger$$^{*}$ & 0.455$\pm$0.310 & 0.455 & 1.37 & n/a$^{\P}$ & -- & --\\
 \midrule
 \multicolumn{7}{l}{\emph{Operator-based multi-view diffusion (Tab.~1)}}\\
-AD \cite{katz2019}$^{*}$ & 0.320$\pm$0.298 & 0.321 & 0.96 & 15--4 & 0.211 & 0.1\\
-\textsc{p}-AD \cite{kuchroo2022}$^{*}$ & 0.322$\pm$0.294 & 0.323 & 0.97 & 16--3 & 0.066 & 1.4\\
-ID \cite{kuchroo2022}$^{*}$ & 0.309$\pm$0.290 & 0.322 & 0.93 & 15--4 & 0.211 & 0.8\\
-MVD \cite{lindenbaum2020} & 0.320$\pm$0.298 & 0.330 & 0.96 & 17--2 & \textbf{0.012} & 1.3\\
-\textsc{Cr-Diff} \cite{wang2012} & 0.317$\pm$0.274 & 0.286 & 0.95 & 16--3 & 0.066 & 0.8\\
+AD \cite{katz2019}$^{*}$ & 0.320$\pm$0.298 & 0.321 & 0.96 & 16--3 & \textbf{0.044} & 0.1\\
+\textsc{p}-AD \cite{kuchroo2022}$^{*}$ & 0.322$\pm$0.294 & 0.323 & 0.97 & 17--2 & \textbf{0.009} & 1.4\\
+ID \cite{kuchroo2022}$^{*}$ & 0.309$\pm$0.290 & 0.322 & 0.93 & 17--2 & \textbf{0.009} & 0.8\\
+MVD \cite{lindenbaum2020} & 0.320$\pm$0.298 & 0.330 & 0.96 & 18--1 & \textbf{0.001} & 1.3\\
+\textsc{Cr-Diff} \cite{wang2012} & 0.317$\pm$0.274 & 0.286 & 0.95 & 16--3 & \textbf{0.044} & 0.8\\
 \textsc{Com-Diff} \cite{shnitzer2018}\,\footnotesize(2 views) & 0.076$\pm$0.068 & 0.093 & 0.76 & 4--0 & 0.625 & 0.1\\
 \midrule
 \multicolumn{7}{l}{\emph{Non-diffusion, inductive by construction}}\\
-GCCA$^{\S}$ & 0.323$\pm$0.290 & 0.384 & 0.97 & 15--4 & 0.211 & 0.2\\
-DGCCA \cite{benton2017}$^{\S}$ & 0.381$\pm$0.287 & 0.434 & 1.15 & 10--9 & 1.000 & 2.9\\
-SpecRaGE \cite{yacobi2025}$^{\S}$ & \textbf{0.417$\pm$0.276} & 0.436 & 1.25 & 6--13 & 0.668 & 47.4\\
+GCCA$^{\S}$ & 0.323$\pm$0.290 & 0.384 & 0.97 & 15--4 & 0.134 & 0.2\\
+DGCCA \cite{benton2017}$^{\S}$ & 0.381$\pm$0.287 & 0.434 & 1.15 & 11--8 & 1.000 & 2.9\\
+SpecRaGE \cite{yacobi2025}$^{\S}$ & 0.417$\pm$0.276 & 0.436 & 1.25 & 10--9 & 1.000 & 47.4\\
 \midrule
 \multicolumn{7}{l}{\emph{Controls}}\\
-Uniform mean ($t$ steps)$^{*}$ & 0.413$\pm$0.327 & 0.441 & 1.24 & 4--15 & 0.211 & 0.1\\
-Concat.\ features$^{\S}$ & 0.355$\pm$0.331 & 0.350 & 1.07 & 11--8 & 1.000 & 0.0\\
+Uniform mean ($t$ steps)$^{*}$ & 0.413$\pm$0.327 & 0.441 & 1.24 & 9--10 & 1.000 & 0.1\\
+Concat.\ features$^{\S}$ & 0.355$\pm$0.331 & 0.350 & 1.07 & 13--6 & 0.668 & 0.0\\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,102 @@
+{
+  "baseline": "mdt_cvx_rand",
+  "methods": {
+    "features": {
+      "encompassed_by_mdt": null,
+      "runs": 10,
+      "train_ami": {
+        "mean": 0.4421724059935538,
+        "std": 0.026906634364772912
+      },
+      "test_ami": {
+        "mean": 0.41656848269502955,
+        "std": 0.03480139144485429
+      },
+      "inductive_ami": {
+        "mean": 0.45139938952875636,
+        "std": 0.025648387727462228
+      },
+      "train_seconds": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "prr_inductive": null,
+      "prr_paired_cells": 0
+    },
+    "features_matched": {
+      "encompassed_by_mdt": null,
+      "runs": 10,
+      "train_ami": {
+        "mean": 0.3444937657611667,
+        "std": 0.030242066369154188
+      },
+      "test_ami": {
+        "mean": 0.3647874993731804,
+        "std": 0.02218052348975049
+      },
+      "inductive_ami": {
+        "mean": 0.3583825144569658,
+        "std": 0.029690163862721858
+      },
+      "train_seconds": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "prr_inductive": null,
+      "prr_paired_cells": 0
+    }
+  },
+  "decisions": {
+    "mdt_cvx_rand_vs_features": {
+      "inductive_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      },
+      "test_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      },
+      "train_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      }
+    },
+    "mdt_cvx_rand_vs_features_matched": {
+      "inductive_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      },
+      "test_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      },
+      "train_ami": {
+        "effect": null,
+        "datasets": 0,
+        "verdict": "inconclusive",
+        "p_holm": null,
+        "significant_holm_05": null
+      }
+    }
+  },
+  "family_size": {
+    "inductive_ami": 0,
+    "test_ami": 0,
+    "train_ami": 0
+  }
+}

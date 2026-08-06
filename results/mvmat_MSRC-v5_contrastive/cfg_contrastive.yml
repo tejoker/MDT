@@ -1,0 +1,24 @@
+data:
+  path: /tmp/Multi-view-datasets
+  name: MSRC-v5      # any .mat from github.com/ChuanbinZhang/Multi-view-datasets
+  split: 0.7
+  seed: 0
+  standardize: True
+mdt:
+  n_components: 7    # = number of clusters for this dataset
+  steps: 4
+  method: contrastive  # random | circulant | contrastive (learned fusion)
+  knn: 5             # ~ log(n_train)
+  quantile: 0.5
+encoder:
+  architecture:
+    units: 256
+    use_bn: True       # BatchNorm on the embedding head: prevents the Psi=0 collapse
+  optimizer:
+    learning_rate: 0.01
+  training:
+    epochs: 1000
+    batch_size: 147
+    shuffle: True
+    verbose: 0
+output_dir: results
