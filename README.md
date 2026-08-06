@@ -1,4 +1,24 @@
-# Deep Diffusion Maps
+# Deep Diffusion Maps — fork with Multi-view Diffusion Trajectory work
+
+> **If you are looking for the MDT work, start here.** This is a fork of
+> [sgh14/deep-diffusion-maps](https://github.com/sgh14/deep-diffusion-maps)
+> (Deep Diffusion Maps, [arXiv:2505.06087](https://arxiv.org/abs/2505.06087)).
+> Everything below the fold is that original project. The additions in this fork
+> concern **MDT** ([arXiv:2512.01484](https://arxiv.org/abs/2512.01484)):
+>
+> | what | where |
+> |---|---|
+> | **Out-of-sample benchmark: MDT vs the multi-view literature** | [`experiments/mvbench/`](experiments/mvbench/) — results in **[`results/mvbench/RESULTS.md`](results/mvbench/RESULTS.md)** |
+> | Tables for the paper, LaTeX | [`paper/tables/mvbench_sheet.tex`](paper/tables/mvbench_sheet.tex) |
+> | MDT operator into the DDM encoder | [`src/mdt_operators.py`](src/mdt_operators.py), [`experiments/mvmat/`](experiments/mvmat/) |
+> | GNN vs MDT study (closed, negative) | [`experiments/gnn_mdt/`](experiments/gnn_mdt/), [`docs/GNN_RESEARCH_LEDGER.md`](docs/GNN_RESEARCH_LEDGER.md) |
+> | Multiplex-graph MDT study | [`experiments/graph_mdt/`](experiments/graph_mdt/), [`docs/GRAPH_MDT_RESEARCH_LEDGER.md`](docs/GRAPH_MDT_RESEARCH_LEDGER.md) |
+>
+> Quickest look: read
+> [`results/mvbench/RESULTS.md`](results/mvbench/RESULTS.md). Quickest run:
+> `conda env create -f experiments/environment-mdt.yml && conda activate mdt &&
+> python -m experiments.mvbench.bench --smoke` (about a minute, no data
+> download needed).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
