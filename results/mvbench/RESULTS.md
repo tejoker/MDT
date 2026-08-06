@@ -114,7 +114,8 @@ rows from different configurations can never be confused. `--resume` skips
 | `noise_s*.jsonl`, `noise2k_s*.jsonl` | noise axis at n=800 and n=2000 |
 | `ch_operators_5seed.jsonl` | Q_CH scored on operators vs data views |
 | `ablation/` | superseded runs, kept for the paper-vs-code comparison |
-| `../../paper/tables/mvbench_sheet.tex` | all seven tables, LaTeX |
+| `../../paper/tables/mvbench_sheet.pdf` | **all seven tables, compiled -- read this if you want no LaTeX** |
+| `../../paper/tables/mvbench_sheet.tex` | the same tables as LaTeX, to paste into the paper |
 
 ## Caveats worth reading before citing
 
