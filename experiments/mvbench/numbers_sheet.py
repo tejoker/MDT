@@ -1,6 +1,7 @@
 """Emit the complete out-of-sample numbers sheet as one standalone LaTeX file.
 
-    python -m experiments.mvbench.numbers_sheet     # -> paper/tables/mvbench_sheet.tex
+    python -m experiments.mvbench.numbers_sheet          # tables + RESULTS.md
+    python -m experiments.mvbench.numbers_sheet --pdf    # also compile the PDF
 
 Every number is computed from the JSONL result files, never typed by hand, so the
 sheet cannot drift from the data.  Tables:
@@ -15,8 +16,12 @@ sheet cannot drift from the data.  Tables:
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import shutil
+import subprocess
+import tempfile
 from math import comb
 from pathlib import Path
 
@@ -525,8 +530,8 @@ def markdown_sheet():
         "python -m experiments.mvbench.bench -c experiments/mvbench/config.yml \\",
         "    --datasets k_mvmnist l_mvmnist --noise-factor 0.9",
         "",
-        "# regenerate this file and the LaTeX tables from whatever JSONL is present",
-        "python -m experiments.mvbench.numbers_sheet",
+        "# regenerate this file, the LaTeX tables and the PDF from whatever JSONL is present",
+        "python -m experiments.mvbench.numbers_sheet --pdf",
         "```",
         "",
         "Every run appends one JSON object per (dataset, seed, method) and records its own",
@@ -566,7 +571,48 @@ def markdown_sheet():
     return "\n".join(lines)
 
 
+STANDALONE = Path("paper/tables/mvbench_sheet_standalone.tex")
+PDF = Path("paper/tables/mvbench_sheet.pdf")
+
+
+def compile_pdf() -> bool:
+    """Compile the standalone wrapper and drop the PDF next to the tables.
+
+    Regenerating the numbers and forgetting to rebuild the PDF is how a stale
+    artefact gets committed, so this is one flag rather than three commands.
+    """
+    engine = shutil.which("tectonic") or str(Path.home() / ".local/bin/tectonic")
+    if not Path(engine).exists():
+        print("  no tectonic found; skipping PDF "
+              "(install: https://tectonic-typesetting.github.io)")
+        return False
+    with tempfile.TemporaryDirectory() as tmp:
+        done = subprocess.run([engine, "-X", "compile", str(STANDALONE),
+                               "--outdir", tmp],
+                              capture_output=True, text=True)
+        if done.returncode != 0:
+            tail = "\n    ".join(done.stderr.strip().splitlines()[-4:])
+            print(f"  PDF compile FAILED (rc={done.returncode}):\n    {tail}")
+            return False
+        built = Path(tmp) / (STANDALONE.stem + ".pdf")
+        if not built.exists():
+            print("  PDF compile produced no file")
+            return False
+        shutil.copy(built, PDF)
+    try:                                  # cheap validity check, not a guess
+        import pypdf
+        pages = len(pypdf.PdfReader(PDF).pages)
+        print(f"wrote {PDF}  ({PDF.stat().st_size // 1024} KB, {pages} pages)")
+    except Exception:
+        print(f"wrote {PDF}  ({PDF.stat().st_size // 1024} KB)")
+    return True
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--pdf", action="store_true",
+                        help="also compile paper/tables/mvbench_sheet.pdf")
+    args = parser.parse_args()
     m1, m2 = main_tables()
     parts = [m1, m2, constructed_table(), split_table(), kernel_table(),
              noise_table(), discrepancy_table()]
@@ -580,6 +626,8 @@ def main():
     md.write_text(markdown_sheet() + "\n", encoding="utf-8")
     print(f"wrote {OUT}  ({len(doc.splitlines())} lines, {len(parts)} tables)")
     print(f"wrote {md}   ({len(markdown_sheet().splitlines())} lines)")
+    if args.pdf:
+        compile_pdf()
 
 
 if __name__ == "__main__":

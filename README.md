@@ -462,7 +462,7 @@ raw JSONL so they cannot go stale:
 * [`paper/tables/mvbench_sheet.tex`](paper/tables/mvbench_sheet.tex) — the same
   seven tables in LaTeX, plus the verified paper-vs-reference-code
   discrepancies. `mvbench_sheet_standalone.tex` compiles it on its own.
-* Regenerate both with `python -m experiments.mvbench.numbers_sheet`.
+* Regenerate all three with `python -m experiments.mvbench.numbers_sheet --pdf`.
 
 **Headline.** MDT-Direct beats every published operator-based
 competitor out of sample and reproduces the paper's PRR of 1.08 on unseen

@@ -94,8 +94,8 @@ python -m experiments.mvbench.bench -c experiments/mvbench/config.yml --ch-targe
 python -m experiments.mvbench.bench -c experiments/mvbench/config.yml \
     --datasets k_mvmnist l_mvmnist --noise-factor 0.9
 
-# regenerate this file and the LaTeX tables from whatever JSONL is present
-python -m experiments.mvbench.numbers_sheet
+# regenerate this file, the LaTeX tables and the PDF from whatever JSONL is present
+python -m experiments.mvbench.numbers_sheet --pdf
 ```
 
 Every run appends one JSON object per (dataset, seed, method) and records its own
