@@ -415,143 +415,38 @@ aggregate verdicts are in `results/gnn_mdt/metrics.jsonl`,
 
 ### Out-of-sample benchmark against the multi-view literature
 
-`experiments/mvbench/` puts MDT next to the methods the MDT paper compares
-itself to — Alternating Diffusion, powered AD, Integrated Diffusion, Multi-View
-Diffusion Maps, Cross-Diffusion, Composite Diffusion — plus GCCA and two
-controls, and asks the question the paper cannot: **which multi-view operator
-still separates classes on points that were not in the operator?** Every
-compared method is transductive, so all of them get the same treatment: the
-same per-view Gaussian kNN transitions, the same truncated-SVD embedding, and
-the same Nyström extension, obtained by writing each operator as
-`W = Σ_v P_v S_v` and substituting the test→train transition `B_v` for the
-leftmost factor. `bench.py --smoke` asserts that identity to machine precision
-for every method before anything is measured.
+`experiments/mvbench/` asks the question the MDT paper cannot: **given a
+train/test split, which multi-view operator still separates classes on points
+that were never in the operator?** Every method the paper compares against is
+transductive, so all of them get identical treatment — one kernel, one
+truncated-SVD embedding, and one Nyström extension, obtained by writing each
+operator as `W = Σ_v P_v S_v` and substituting the test→train transition for the
+leftmost factor. `bench.py --smoke` asserts that identity to 1e-16 for all nine
+operator builders before anything is measured.
 
-Two controls carry the interpretation. `uniform_fused` is the *no-trajectory*
-ablation — the uniform mean operator raised to `t` — and `features` is raw
-concatenated views with no fusion at all. `ENCOMPASSED` records which
-competitors paper Sec. 3.5 proves *are* MDT trajectories (AD, ID, p-AD): a win
-over those is a statement about trajectory choice, not about the framework.
+**Scope.** 19 `.mat` datasets × 10 seeds, plus 3 constructed ones (8 of the 9
+clustering datasets of the paper's Tab. 3). 18 arms: all five MDT variants of
+Tab. 2, the six operator-based competitors of Tab. 1, GCCA/DGCCA, SpecRaGE
+(TMLR 2025), and two controls. Ablations over the train fraction, the kernel,
+the `Q_CH` target and the noise parameter of Fig. 7.
 
-Two arms do not fit the `(W, suffix)` shape and are run separately, because
-they need no Nyström rule at all — they are inductive by construction:
+**Results — do not read numbers from this file.** They are generated from the
+raw JSONL so they cannot go stale:
 
-* `gcca` / `dgcca` — Generalised CCA and its deep form (Benton et al. 2017).
-* `specrage` — **SpecRaGE** (Yacobi et al., TMLR 2025, `arXiv:2411.02138`), a
-  parametric map approximating the joint diagonalisation of the per-view graph
-  Laplacians. This is the closest published relative of this repo's MDT → DDM
-  pipeline and the strongest available competitor, so it is run on the
-  *identical* split via `experiments/mvbench/specrage_arm.py`. See that
-  module's docstring for the leakage and batch-size traps upstream contains.
+* [`results/mvbench/RESULTS.md`](results/mvbench/RESULTS.md) — full tables,
+  how to reproduce, and the caveats that matter before citing anything.
+* [`paper/tables/mvbench_sheet.tex`](paper/tables/mvbench_sheet.tex) — the same
+  seven tables in LaTeX, plus the verified paper-vs-reference-code
+  discrepancies. `mvbench_sheet_standalone.tex` compiles it on its own.
+* Regenerate both with `python -m experiments.mvbench.numbers_sheet`.
 
-Result on **19 datasets × 10 seeds = 190 cells per arm**, mean inductive AMI
-(train-fitted KMeans applied to the extended test embedding):
-
-| method | MDT special case? | inductive AMI | PRR | train s |
-|---|---|---|---|---|
-| `specrage` (TMLR 2025) | no | **0.417** | 1.10 | 47.4 |
-| `uniform_fused` (no trajectory) | yes | 0.413 | 1.09 | 0.1 |
-| `dgcca` | no | 0.381 | 1.00 | 2.9 |
-| `mdt_cvx_rand` | — (baseline) | 0.380 | 1.00 | 0.1 |
-| `features` (concat, no fusion) | — | 0.355 | 0.93 | 0.0 |
-| `mdt_selected` (silhouette search) | yes | 0.338 | 0.89 | 11.0 |
-| `mdt_rand` | yes | 0.333 | 0.88 | 0.1 |
-| `gcca` | no | 0.323 | 0.85 | 0.3 |
-| `p_ad` | yes | 0.322 | 0.85 | 1.4 |
-| `mvd` | no | 0.320 | 0.84 | 1.4 |
-| `ad` | yes | 0.320 | 0.84 | 0.1 |
-| `cr_diff` | no | 0.317 | 0.83 | 0.8 |
-| `id` | yes | 0.309 | 0.81 | 0.8 |
-
-All five MDT variants from the paper's Tab. 2 are present. `mdt_direct` uses
-`scipy.optimize.direct`, which *is* Jones 2001 (the paper's ref. [18]), so the
-reference repo's `gob` dependency is unnecessary; `mdt_cst` reuses the
-contrastive loss already vendored in `src/mdt_operators.py`.
-
-| MDT variant | space | index | optimiser | inductive AMI | PRR vs MDT-RAND | paper's PRR |
-|---|---|---|---|---|---|---|
-| `mdt_cvx_rand` | convex | — | — | **0.380** | **1.141** | 1.07 |
-| `mdt_direct` | convex | `Q_CH` | DIRECT | 0.361 | 1.084 | 1.08 |
-| `mdt_cst` | convex | `Q_X` | ADAM | 0.348 | 1.044 | — |
-| `mdt_selected` | mixed | silhouette | pool rank | 0.338 | 1.014 | — |
-| `mdt_bsc` | discrete | `Q_CH` | beam | 0.333 | 1.000 | 1.03 |
-| `mdt_rand` | discrete | — | — | 0.333 | 1.000 | 1.00 |
-
-**Measured against the paper's own Eq. 21 baseline (MDT-RAND), the paper's PRR
-ordering reproduces out of sample almost exactly** — MDT-DIRECT lands at 1.084
-against the published 1.08. That is a genuine, non-trivial reproduction of
-Fig. 6 on unseen points, and it is the strongest thing this benchmark says in
-the paper's favour.
-
-**But trajectory search buys nothing over a single random convex draw, and
-costs 180x.** `mdt_cvx_rand` beats every optimised variant: DIRECT on 13 of 19
-datasets, CST 16/19, silhouette 16/19, beam 15/19. Three different internal
-indices (`Q_CH`, contrastive `Q_X`, silhouette) and three different search
-strategies (DIRECT, beam, full-pool ranking) all land below one Dirichlet
-sample. The transductive ordering *inverts*: the paper has DIRECT >= CVX-RAND,
-out of sample CVX-RAND > DIRECT. That inversion is the signature of the
-internal index overfitting the training operator — it is selected on the train
-embedding and does not transfer, which is exactly what an out-of-sample
-protocol is for. Only the DIRECT gap is small enough to be non-significant
-(13-6, `p_sign = .167`); the CST, silhouette and beam losses are individually
-significant.
-
-Three statistics per comparison, because a t-interval over 19 heterogeneous
-datasets assumes those 19 numbers are roughly normal and there is no reason
-they should be: the t-interval on dataset means, a 20k-draw percentile
-**bootstrap** over datasets, and an exact **sign test** on how many datasets
-each side wins. **Holm-Bonferroni** across the 13-comparison family, because
-one baseline against 13 competitors makes the chance that at least one
-uncorrected 95% interval clears zero by luck about `1 − 0.95¹³ ≈ 49%`.
-
-| MDT vs | effect | t-CI95 | boot-CI95 | W–L | p_sign | p_holm(sign) |
-|---|---|---|---|---|---|---|
-| `id` | +0.071 | `[+0.015,+0.126]` | `[+0.026,+0.127]` | 15–4 | .019 | .173 |
-| `cr_diff` | +0.063 | `[+0.032,+0.094]` | `[+0.036,+0.092]` | 16–3 | .004 | .053 |
-| `ad` | +0.060 | `[+0.016,+0.104]` | `[+0.024,+0.104]` | 15–4 | .019 | .173 |
-| `mvd` | +0.060 | `[+0.016,+0.103]` | `[+0.024,+0.103]` | 17–2 | **.0007** | **.0095** |
-| `p_ad` | +0.058 | `[+0.013,+0.104]` | `[+0.019,+0.104]` | 16–3 | .004 | .053 |
-| `gcca` | +0.057 | `[-0.017,+0.131]` | `[-0.005,+0.129]` | 15–4 | .019 | .173 |
-| `dgcca` | −0.001 | `[-0.033,+0.031]` | `[-0.032,+0.026]` | 10–9 | 1.00 | 1.00 |
-| `uniform_fused` | **−0.033** | `[-0.058,-0.009]` | `[-0.057,-0.014]` | 4–15 | .019 | .173 |
-| `specrage` | −0.037 | `[-0.086,+0.012]` | `[-0.082,+0.007]` | 6–13 | .167 | .501 |
-
-**MDT beats every published diffusion competitor, directionally and
-robustly** — 15 to 17 of 19 datasets, +0.058 to +0.071, with both the t and
-bootstrap intervals excluding zero in all five cases. But only MVD survives
-family-wise correction at α=0.05 (`p_holm = 0.0095`); CR-DIFF and p-AD sit on
-the line at 0.053. State it as a consistent direction across 19 datasets, not
-as five independently significant wins.
-
-**The uniform mean operator still beats MDT, and this is the robust result.**
-Effect −0.033 with *both* intervals excluding zero, winning **15 of 19**
-datasets. It is not one dataset carrying a mean: MDT's only four wins are
-3Sources, Movies, Prokaryotic and Reuters-1200 — all datasets where every
-method is at the AMI floor (< 0.07) *for MDT*. On every dataset with real signal, the
-uniform blend wins. Trajectory search makes it worse, not better
-(`mdt_selected` loses to a single Dirichlet draw 16–3).
-
-**SpecRaGE is not significantly ahead** — 6–13, `p_sign = 0.167`, both
-intervals straddling zero, at **395× the compute** (47.4 s vs 0.12 s). Its
-wins are concentrated exactly where MDT's fixed kernel collapses (Wikipedia
-+0.293, Reuters-1200 +0.176, 3Sources +0.153, ProteinFold +0.090) and it loses
-where the kernel is good (Yale −0.190, MNIST-10k −0.078). It also diverged to
-`nan` loss from epoch 1 on 3 of 10 BBCSport seeds (3183-dim sparse text,
-reproducible across re-runs, recovered on a second init) — a robustness cost
-MDT does not pay. `attempts_used` and `diverged` are recorded per row.
-
-Scaling from 6 to 19 datasets changed two conclusions, which is the reason to
-distrust the pilot: GCCA went from tying MDT to losing 15–4, and SpecRaGE's
-lead shrank from +0.060 to a non-significant +0.037. Absolute AMI fell across
-the board (MDT 0.59 → 0.38) because the 13 added datasets are harder. They are
-*not* simply uninformative: only 3 of 19 (Movies, NUS-WIDE, ProteinFold) are near
-the floor for every method. On 5 others — 3Sources, BBCSport, Prokaryotic,
-Reuters-1200, WebKB — MDT is below 0.11 while another method clears 0.15, so
-those are MDT failures, not dataset failures.
-
-Raw rows and verdicts: `results/mvbench/metrics.jsonl` (Nyström arms),
-`results/mvbench/specrage.jsonl`, merged `results/mvbench/all_metrics.jsonl`
-and `results/mvbench/all_summary.json`.
+**Headline.** MDT-Direct beats every published operator-based
+competitor out of sample and reproduces the paper's PRR of 1.08 on unseen
+points, at all three train fractions tested. It ties SpecRaGE at half the
+compute. It is *statistically indistinguishable* from the uniform-constant
+trajectory — a member of its own operator space — across 22 datasets, 3 train
+fractions, 2 kernels, 3 sample sizes and 9 noise levels, and the ordering is
+kernel-conditional. See `RESULTS.md` for the intervals and the limitations.
 
 ### Usage
 
